@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#254e40">
+  <meta name="description" content="Kindevra — a little space for your mind. Guided mental wellness support.">
+  <title>Kindevra · A space for you</title>
+  <link rel="stylesheet" href="/style.css">
+  <script type="module" src="/app.js"></script>
+</head>
+<body>
+  <aside class="sidebar">
+    <a class="brand" href="/" aria-label="Kindevra home"><span class="brand-icon">k</span> kindevra<span class="brand-dot">.</span></a>
+    <p class="eyebrow">YOUR SPACE TO EXHALE</p>
+    <nav aria-label="Main navigation">
+      <button class="nav active" data-view="chat">◌ <span>My space</span></button>
+      <button class="nav" data-view="library">✧ <span>Practice library</span></button>
+      <button class="nav" data-view="about">ⓘ <span>About your space</span></button>
+    </nav>
+    <div class="sidebar-bottom"><p>You don’t have to figure<br>everything out today.</p><span>A small step is still a step.</span></div>
+    <button class="help" id="help">I need urgent support ↗</button>
+  </aside>
+  <main>
+    <header><span>A LITTLE SPACE FOR YOUR MIND</span><span class="status">● Guided prototype</span></header>
+    <section id="chat" class="view">
+      <div class="intro"><p class="eyebrow">COME AS YOU ARE</p><h1>How are you,<br><em>really?</em></h1><p>No perfect words needed. Take a breath.<br>There’s space here for whatever today feels like.</p></div>
+      <section class="checkin" aria-labelledby="mood-title"><div><h2 id="mood-title">Let’s start with a little check-in.</h2><p>How does today feel?</p></div><div class="moods" role="group" aria-label="Today's mood">
+        <button data-mood="Heavy" aria-pressed="false"><span>☂</span>Heavy</button><button data-mood="Low" aria-pressed="false"><span>☁</span>Low</button><button data-mood="Okay" aria-pressed="false"><span>◒</span>Okay</button><button data-mood="Good" aria-pressed="false"><span>☀</span>Good</button><button data-mood="Bright" aria-pressed="false"><span>✺</span>Bright</button>
+      </div><p id="mood-note" role="status">Just for this visit. There’s no right answer.</p></section>
+      <div class="conversation-heading"><h2>A moment, just for you</h2><button id="clear">Clear conversation</button></div>
+      <div id="messages" role="log" aria-label="Conversation" aria-live="polite"></div>
+      <div class="suggestions"><button data-prompt="I feel overwhelmed">I feel overwhelmed</button><button data-prompt="I am stuck in my thoughts">I’m overthinking</button><button data-prompt="I just need to talk">I just need to talk</button></div>
+      <form id="chat-form"><label class="sr-only" for="message">Your message</label><textarea id="message" rows="2" maxlength="2000" placeholder="What’s on your mind?" required></textarea><button class="send" type="submit" aria-label="Send message">↑</button></form>
+      <p class="privacy">This prototype uses scripted responses. Messages stay in this tab and disappear on refresh.</p>
+      <p class="disclaimer">Kindevra is a mental wellness prototype, not a therapist or emergency service. It cannot diagnose or provide treatment.</p>
+    </section>
+    <section id="library" class="view" hidden><p class="eyebrow">SMALL PRACTICES, AT YOUR PACE</p><h1>A gentler<br><em>next step.</em></h1><p class="lead">A few ideas to explore. Choose what feels right, and stop any exercise that feels uncomfortable.</p><div id="exercise-list"></div></section>
+    <section id="about" class="view" hidden><p class="eyebrow">THOUGHTFUL BY DESIGN</p><h1>Support starts<br>with <em>honesty.</em></h1><div class="about-card"><h2>What Kindevra is today</h2><p>A guided, scripted prototype for adults exploring everyday mental wellness. It does not yet use a language model. Responses follow a small set of rules and may miss context.</p><h2>A foundation, not a qualification</h2><p>The practice library draws on public psychology resources. Reading those resources does not give an app the skills, judgment, or accountability of a licensed therapist. Clinical review and safety evaluation are required before broader use.</p><h2>Your words stay with you</h2><p>Messages and mood choices live only in this tab’s memory. There are no accounts, analytics, browser storage, or chat uploads. Refresh or clear the conversation to remove them. Future online AI features will need a separate privacy choice.</p><h2>When you need more support</h2><p>For ongoing distress or symptoms affecting daily life, consider a qualified mental health professional. Use the urgent support button if you may be in immediate danger.</p></div></section>
+    <footer>KINDEVRA <span>A little kindness. A little clarity.</span></footer>
+  </main>
+  <dialog id="support-dialog"><h2>You deserve real-time support.</h2><p id="urgent-text"></p><p>This app cannot assess an emergency. You do not need to wait for a chat response to seek help.</p><button id="close-support">Close</button></dialog>
+</body>
+</html>
