@@ -18,3 +18,11 @@
 - [ ] Assess authentication, rate limiting, privacy, accessibility, and deployment before public release.
 
 Daily work should make a bounded, meaningful improvement, run relevant checks, and push source changes to the repository. Never commit user conversations or credentials.
+
+## October 20 evaluation increment
+- [x] Add source metadata with rights constraints and pending review status.
+- [x] Add a 13-scenario reproducible evaluation and dated results (8 passed, 5 unresolved).
+- [x] Improve indirect-distress prompts and exercise refusal; 6 unit checks pass.
+- [ ] Address the five failures in evaluation/2026-10-20.md, then expand paraphrase and multi-turn coverage.
+
+The broader knowledge-review and conversation-safety milestones above remain open.

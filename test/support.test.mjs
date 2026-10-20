@@ -17,3 +17,16 @@ test('psychology exercises include reputable references', () => {
 test('unmatched user text is never interpolated into replies', () => {
   assert.ok(!replyTo('<script>alert(1)</script>').text.includes('<script>'));
 });
+
+test('indirect distress gets a safety question and human support', () => {
+  for (const text of ['My family would be better off without me', 'I wish I wouldn’t wake up']) {
+    const response = replyTo(text);
+    assert.equal(response.urgent, true);
+    assert.match(response.text, /thinking about suicide/);
+    assert.match(response.text, /trusted person/);
+  }
+});
+test('an exercise refusal is respected without suppressing explicit danger', () => {
+  assert.match(replyTo('I do not want this breathing exercise').text, /do not have to/);
+  assert.equal(replyTo('Stop the grounding exercise. I want to die').urgent, true);
+});

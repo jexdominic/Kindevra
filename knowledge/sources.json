@@ -1,0 +1,58 @@
+[
+  {
+    "id": "nimh-warning",
+    "title": "Warning Signs of Suicide",
+    "url": "https://www.nimh.nih.gov/health/publications/warning-signs-of-suicide",
+    "publisher": "NIMH",
+    "checked": "2026-10-20",
+    "summary": "Expressions of burdensomeness and lack of reasons for living can warrant a direct safety question and connection to human support. A phrase match cannot establish risk.",
+    "tags": [
+      "crisis",
+      "indirect-distress",
+      "referral"
+    ],
+    "rights": "Linked source with an original short summary; republication and training permissions not verified. Do not ingest the full publication.",
+    "clinicalReview": "pending",
+    "limitations": [
+      "Not a diagnostic tool",
+      "Absence of listed signs does not establish safety"
+    ]
+  },
+  {
+    "id": "who-stress",
+    "title": "Doing What Matters in Times of Stress",
+    "url": "https://www.who.int/publications/b/53604",
+    "publisher": "WHO",
+    "checked": "2026-10-20",
+    "summary": "The guide introduces practical stress-management skills including grounding. App exercises should remain optional; discomfort is a reason to stop or choose other support. The stop behavior is a product safeguard, not a validated treatment protocol.",
+    "tags": [
+      "grounding",
+      "stress",
+      "autonomy"
+    ],
+    "rights": "Source states CC BY-NC-SA 3.0 IGO; commercial reuse requires permission. Link and metadata only for corpus ingestion until license review.",
+    "clinicalReview": "pending",
+    "limitations": [
+      "May not suit every person or situation",
+      "No promised clinical benefit",
+      "Existing app prompts require license review before commercial release"
+    ]
+  },
+  {
+    "id": "nimh-therapy",
+    "title": "Psychotherapies",
+    "url": "https://www.nimh.nih.gov/health/topics/psychotherapies",
+    "publisher": "NIMH",
+    "checked": "2026-10-20",
+    "summary": "Professional psychotherapy involves individualized care. Persistent difficulties should not be diagnosed by this prototype.",
+    "tags": [
+      "referral",
+      "professional-support"
+    ],
+    "rights": "Linked reference; full-text reuse and training permissions not verified.",
+    "clinicalReview": "pending",
+    "limitations": [
+      "Does not validate app responses"
+    ]
+  }
+]

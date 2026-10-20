@@ -20,8 +20,21 @@ export const exercises = {
   },
 };
 export function replyTo(text, turn = 0) {
+  // Normalize punctuation without treating a wording match as a risk assessment.
+  text = String(text).normalize('NFKC').replace(/[’‘]/g, "'");
   if (/\b(suicid\w*|kill myself|end my life|hurt myself|self.?harm|overdos\w*|kill someone|hurt someone|don't want to live|do not want to live|want to die)\b/i.test(text))
     return { text: urgentSupport, urgent: true };
+  // Indirect distress needs a direct question, not an assumed diagnosis or reassurance.
+  if (/\b(better off without me|no reason to live|wish i (?:would|could) not wake up|wish i wouldn't wake up)\b/i.test(text))
+    return {
+      text: "That sounds painful, and I want to take it seriously. Are you thinking about suicide or harming yourself right now? Please reach out to a trusted person who can be with you. " + urgentSupport,
+      source: 'https://www.nimh.nih.gov/health/publications/warning-signs-of-suicide',
+      label: 'NIMH · Warning Signs of Suicide',
+      urgent: true,
+    };
+  // Explicit risk above takes priority even when someone also asks to stop an exercise.
+  if (/\b(stop|skip|don't want|do not want|makes? me (?:feel )?worse)\b/i.test(text) && /\b(grounding|exercise|breathing)\b/i.test(text))
+    return { text: 'We can stop the exercise. You do not have to continue or explain why. Would you prefer to talk about what you need, reach out to someone you trust, or take a break?' };
   if (/\b(diagnos\w*|medicat\w*|dose|prescri\w*)\b/i.test(text))
     return { text: 'I can’t diagnose conditions or recommend medication or doses. A qualified clinician can help with those decisions. If you already take medication, contact your prescriber before changing it.', ...{ source: exercises.support.source, label: exercises.support.label } };
   if (/\b(anxi\w*|panic|stress\w*|overwhelm\w*)\b/i.test(text)) return exercises.grounding;

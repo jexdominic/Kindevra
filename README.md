@@ -32,3 +32,7 @@ Original short educational prompts are informed by:
 Sources checked October 20, 2026. Referencing resources does not imply endorsement, clinical validation, or permission to copy entire publications. Knowledge ingestion must verify licensing and undergo clinician review. Future model integration should retrieve reviewed material with traceable citations, rather than claim therapist-level expertise.
 
 See [ROADMAP.md](ROADMAP.md) for next milestones and [SAFETY.md](SAFETY.md) for evaluation requirements.
+
+## Response evaluation
+
+Run `node evaluation/run.mjs` for the broader scenario suite. It currently reports 8/13 passing and exits with a failure status for five known gaps. See [the dated report](evaluation/2026-10-20.md) and [scoring limitations](evaluation/README.md). Unit tests and scenario checks are not clinical validation. [Source metadata](knowledge/sources.json) records pending review and licensing restrictions.
