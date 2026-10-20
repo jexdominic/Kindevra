@@ -1,6 +1,9 @@
+import { createSession, checkIn, suggestMood } from './session.js';
 import { replyTo, urgentSupport, exercises } from './support.js';
 const messages = document.querySelector('#messages');
 let turn = 0;
+let session = createSession();
+let pendingMood = null;
 function addMessage(text, who = 'kindevra', source, label) {
   const article = document.createElement('article');
   article.className = `message ${who}`;
@@ -20,6 +23,9 @@ function addMessage(text, who = 'kindevra', source, label) {
 }
 function reset() {
   messages.replaceChildren(); turn = 0;
+  session = createSession(); pendingMood = null;
+  document.querySelector('#preference').value = 'listen';
+  document.querySelector('#mood-suggestion').hidden = true;
   document.querySelector('#message').value = '';
   document.querySelectorAll('[data-mood]').forEach(b => b.setAttribute('aria-pressed', 'false'));
   document.querySelector('#mood-note').textContent = 'Just for this visit. There’s no right answer.';
@@ -29,8 +35,11 @@ function send(text) {
   text = text.trim().slice(0, 2000);
   if (!text) return;
   addMessage(text, 'user');
-  const response = replyTo(text, turn++);
+  const response = replyTo(text, turn++, session);
   addMessage(response.text, 'kindevra', response.source, response.label);
+  pendingMood = response.urgent ? null : suggestMood(text);
+  document.querySelector('#mood-suggestion').hidden = !pendingMood;
+  if (pendingMood) document.querySelector('#suggestion-text').textContent = `Would “${pendingMood.toLowerCase()}” fit as a check-in? I may have misunderstood. You can also select a different mood above.`;
   if (response.urgent) document.querySelector('#support-dialog').showModal();
 }
 document.querySelector('#chat-form').addEventListener('submit', e => {
@@ -46,10 +55,26 @@ function showView(id) {
   });
 }
 document.querySelectorAll('[data-view]').forEach(b => b.addEventListener('click', () => showView(b.dataset.view)));
-document.querySelectorAll('[data-mood]').forEach(b => b.addEventListener('click', () => {
-  document.querySelectorAll('[data-mood]').forEach(m => m.setAttribute('aria-pressed', String(m === b)));
-  document.querySelector('#mood-note').textContent = `Today feels ${b.dataset.mood.toLowerCase()}. Thank you for checking in with yourself.`;
-}));
+function chooseMood(mood) {
+  const note = checkIn(session, mood);
+  document.querySelectorAll('[data-mood]').forEach(m => m.setAttribute('aria-pressed', String(m.dataset.mood === mood)));
+  document.querySelector('#mood-note').textContent = note;
+  addMessage(note);
+  pendingMood = null;
+  document.querySelector('#mood-suggestion').hidden = true;
+}
+document.querySelectorAll('[data-mood]').forEach(b => b.addEventListener('click', () => chooseMood(b.dataset.mood)));
+document.querySelector('#preference').addEventListener('change', e => { session.preference = e.target.value; });
+document.querySelector('#accept-mood').addEventListener('click', () => { if (pendingMood) chooseMood(pendingMood); });
+document.querySelector('#dismiss-mood').addEventListener('click', () => {
+  pendingMood = null; document.querySelector('#mood-suggestion').hidden = true;
+});
+document.querySelector('#forget-mood').addEventListener('click', () => {
+  session.mood = null; session.previousMood = null; pendingMood = null;
+  document.querySelector('#mood-suggestion').hidden = true;
+  document.querySelectorAll('[data-mood]').forEach(m => m.setAttribute('aria-pressed', 'false'));
+  document.querySelector('#mood-note').textContent = 'Check-in context forgotten. Earlier chat messages remain until you clear the conversation.';
+});
 document.querySelector('#urgent-text').textContent = urgentSupport;
 document.querySelector('#help').addEventListener('click', () => document.querySelector('#support-dialog').showModal());
 document.querySelector('#close-support').addEventListener('click', () => document.querySelector('#support-dialog').close());

@@ -26,3 +26,6 @@ Daily work should make a bounded, meaningful improvement, run relevant checks, a
 - [ ] Address the five failures in evaluation/2026-10-20.md, then expand paraphrase and multi-turn coverage.
 
 The broader knowledge-review and conversation-safety milestones above remain open.
+
+## Adaptive support requirements
+Follow REQUIREMENTS.md for future development. Prototype now has optional confirmed check-ins, change clarification, support preference and tentative text suggestions. Next: multi-turn and browser tests, refusal memory, broader clinician-reviewed state options, and the five unresolved safety scenarios. No cross-session tracking or clinical state detection is implemented.

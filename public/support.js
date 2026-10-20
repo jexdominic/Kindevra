@@ -1,3 +1,4 @@
+import { adaptiveReply } from './session.js';
 export const urgentSupport = 'If you might act on thoughts of harming yourself or someone else, or you have already taken something harmful, contact local emergency services or go to the nearest emergency department now. If possible, ask a trusted person to stay with you and move away from anything you could use to hurt yourself. Kindevra cannot monitor your safety or contact help for you.';
 export const exercises = {
   grounding: {
@@ -19,7 +20,7 @@ export const exercises = {
     label: 'NIMH · Psychotherapies',
   },
 };
-export function replyTo(text, turn = 0) {
+export function replyTo(text, turn = 0, session = null) {
   // Normalize punctuation without treating a wording match as a risk assessment.
   text = String(text).normalize('NFKC').replace(/[’‘]/g, "'");
   if (/\b(suicid\w*|kill myself|end my life|hurt myself|self.?harm|overdos\w*|kill someone|hurt someone|don't want to live|do not want to live|want to die)\b/i.test(text))
@@ -37,9 +38,11 @@ export function replyTo(text, turn = 0) {
     return { text: 'We can stop the exercise. You do not have to continue or explain why. Would you prefer to talk about what you need, reach out to someone you trust, or take a break?' };
   if (/\b(diagnos\w*|medicat\w*|dose|prescri\w*)\b/i.test(text))
     return { text: 'I can’t diagnose conditions or recommend medication or doses. A qualified clinician can help with those decisions. If you already take medication, contact your prescriber before changing it.', ...{ source: exercises.support.source, label: exercises.support.label } };
+  if (session?.preference === 'listen' && !/\b(therap\w*|professional|depress\w*)\b/i.test(text)) return adaptiveReply(session);
   if (/\b(anxi\w*|panic|stress\w*|overwhelm\w*)\b/i.test(text)) return exercises.grounding;
   if (/\b(thought\w*|worr\w*|overthink\w*)\b/i.test(text)) return exercises.thoughts;
   if (/\b(therap\w*|professional|depress\w*)\b/i.test(text)) return exercises.support;
+  if (session) return adaptiveReply(session);
   const prompts = [
     'Thank you for putting that into words. What feels most important for you to talk about right now?',
     'What has this been like for you today? Share only what feels comfortable.',

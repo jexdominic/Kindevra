@@ -27,6 +27,8 @@
       <section class="checkin" aria-labelledby="mood-title"><div><h2 id="mood-title">Let’s start with a little check-in.</h2><p>How does today feel?</p></div><div class="moods" role="group" aria-label="Today's mood">
         <button data-mood="Heavy" aria-pressed="false"><span>☂</span>Heavy</button><button data-mood="Low" aria-pressed="false"><span>☁</span>Low</button><button data-mood="Okay" aria-pressed="false"><span>◒</span>Okay</button><button data-mood="Good" aria-pressed="false"><span>☀</span>Good</button><button data-mood="Bright" aria-pressed="false"><span>✺</span>Bright</button>
       </div><p id="mood-note" role="status">Just for this visit. There’s no right answer.</p></section>
+      <div class="support-preferences"><label for="preference">How would you like support?</label> <select id="preference"><option value="listen">Listen first</option><option value="steps">Suggest a small step</option></select><button id="forget-mood">Forget check-in</button><p>Check-ins are optional and stay in this tab. They are not a mental health assessment.</p></div>
+      <div id="mood-suggestion" hidden><p id="suggestion-text"></p><button id="accept-mood">Use this check-in</button><button id="dismiss-mood">That doesn’t fit</button></div>
       <div class="conversation-heading"><h2>A moment, just for you</h2><button id="clear">Clear conversation</button></div>
       <div id="messages" role="log" aria-label="Conversation" aria-live="polite"></div>
       <div class="suggestions"><button data-prompt="I feel overwhelmed">I feel overwhelmed</button><button data-prompt="I am stuck in my thoughts">I’m overthinking</button><button data-prompt="I just need to talk">I just need to talk</button></div>
