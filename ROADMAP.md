@@ -29,3 +29,12 @@ The broader knowledge-review and conversation-safety milestones above remain ope
 
 ## Adaptive support requirements
 Follow REQUIREMENTS.md for future development. Prototype now has optional confirmed check-ins, change clarification, support preference and tentative text suggestions. Next: multi-turn and browser tests, refusal memory, broader clinician-reviewed state options, and the five unresolved safety scenarios. No cross-session tracking or clinical state detection is implemented.
+
+## October 21 boundary increment
+- [x] Add harmful-instruction refusal and human-support boundaries before personalized fallback replies.
+- [x] Test both support modes and mood context; 18/18 unit tests pass.
+- [x] Preserve original scenario fixtures: 10/13 now pass, with three unresolved failures.
+- [x] Add NIMH self-care source metadata with rights and review status.
+- [ ] Next: negation, unverified beliefs, and identity-sensitive responses; broaden quoted/hypothetical and multi-turn evaluations.
+
+Earlier dated results remain historical. See evaluation/2026-10-21.md for current limitations. Refusal memory and browser tests remain pending.

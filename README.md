@@ -35,7 +35,7 @@ See [ROADMAP.md](ROADMAP.md) for next milestones and [SAFETY.md](SAFETY.md) for 
 
 ## Response evaluation
 
-Run `node evaluation/run.mjs` for the broader scenario suite. It currently reports 8/13 passing and exits with a failure status for five known gaps. See [the dated report](evaluation/2026-10-20.md) and [scoring limitations](evaluation/README.md). Unit tests and scenario checks are not clinical validation. [Source metadata](knowledge/sources.json) records pending review and licensing restrictions.
+Run `node evaluation/run.mjs` for the broader scenario suite. It currently reports 10/13 passing and exits with a failure status for three known gaps. See [the dated report](evaluation/2026-10-21.md) and [scoring limitations](evaluation/README.md). Unit tests and scenario checks are not clinical validation. [Source metadata](knowledge/sources.json) records pending review and licensing restrictions.
 
 ## Adaptive support prototype
 See [requirements and research](REQUIREMENTS.md). Optional check-ins now influence small-step replies; listen-first is the default. Simple first-person phrases can suggest a check-in, which must be accepted before it changes context. Check-in changes prompt clarification rather than a clinical interpretation. Forgetting active check-in context leaves earlier visible messages until Clear conversation is used.

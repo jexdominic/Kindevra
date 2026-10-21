@@ -54,5 +54,24 @@
     "limitations": [
       "Does not validate app responses"
     ]
+  },
+  {
+    "id": "nimh-self-care",
+    "title": "Caring for Your Mental Health",
+    "url": "https://www.nimh.nih.gov/health/topics/caring-for-your-mental-health",
+    "publisher": "NIMH",
+    "checked": "2026-10-21",
+    "summary": "Supportive relationships can provide emotional and practical help. Self-care needs differ between people. The app relationship boundary is a product safeguard, not a clinical protocol validated by this source.",
+    "tags": [
+      "human-support",
+      "personalization",
+      "self-care"
+    ],
+    "rights": "Page states text is public domain unless otherwise specified; images excluded. Original short summary and link only. No images or full-text ingestion.",
+    "clinicalReview": "pending",
+    "limitations": [
+      "Does not validate chatbot dependency detection",
+      "Do not assume family or a particular contact is safe for every user"
+    ]
   }
 ]

@@ -18,7 +18,7 @@ Requirements below are product-design inferences from those sources and the user
 | P0-02 | Appropriate conversation style (S1) | Listen-first default avoids unsolicited exercises; user can choose small-step suggestions; crisis and medical boundaries take precedence | Implemented prototype |
 | P0-03 | Notice changes without false certainty (user request) | Compare successive confirmed check-ins; ask whether change or correction; never infer diagnosis, recovery or safety from a score | Implemented session-only |
 | P0-04 | Privacy and transparency (S1, S2) | No uploads or persistence; explain memory-only state; clear conversation resets mood and preferences; forgetting mood explains earlier messages remain | Implemented prototype |
-| P0-05 | Reliable safety boundaries (S2) | Resolve five known scenario failures; test contextual and multi-turn cases; qualified review before broader use | Incomplete; release blocker |
+| P0-05 | Reliable safety boundaries (S2) | Resolve three remaining known scenario failures; test contextual and multi-turn cases; qualified review before broader use | Incomplete; release blocker |
 | P0-06 | Honest limits (S1, S2) | Label scripted replies; show unknown state rather than manufacture certainty; no diagnosis, medication adjustment or guarantees | Partial; contextual accuracy remains limited |
 | P1-01 | Wider state-sensitive support (user request) | Confirm anxiety, anger, grief, loneliness, numbness and mixed feelings; offer state-appropriate options reviewed by a clinician | Planned |
 | P1-02 | Useful memory with control (S1) | Separate consent before cross-session storage; edit, export and delete; explicit retention | Planned |
@@ -38,7 +38,7 @@ Current state contains current and previous confirmed mood plus support preferen
 | Changed check-in | Ask whether it represents change or correction; do not claim improvement or worsening |
 | Anxiety/overwhelm | Respect listening preference; optional grounding in step mode; allow stopping |
 | Grief, anger, numbness or mixed feelings | Planned explicit state support; do not pretend current generic replies are tailored |
-| Unverified beliefs, dependency, harmful requests | Existing five-case backlog must be addressed before wider release |
+| Unverified beliefs, dependency, harmful requests | Remaining three-case backlog must be addressed before wider release |
 | Potential immediate danger | Safety guidance overrides mood and preference; no automated diagnosis or promises of rescue |
 
 The aim is to support the user's chosen next step, not to force an opposite emotion or suppress feelings. Crisis language recognition remains incomplete and can misread context.
@@ -48,3 +48,5 @@ The aim is to support the user's chosen next step, not to force an opposite emot
 Recruit consenting adult volunteers and a qualified clinician for moderated testing with fictional scenarios. Do not require sensitive personal disclosures. Ask whether users understand the prototype, privacy choices, corrections and support options. Observe task completion and misunderstandings. Measure perceived usefulness and autonomy separately from clinical efficacy. Include people with varied accessibility, language and cultural needs; do not generalize a small convenience sample to everyone.
 
 Engineering gates: unit checks; browser interaction coverage; multi-turn safety cases; source and license review; no severe unresolved safety findings before broader release. Clinical benefit would need a separate ethically reviewed study, not questionnaire scores assigned to the bot.
+
+October 21 update: harmful-request and dependency fixtures now pass with bounded rules in both support modes. This is partial coverage, not closure of P0-05. See evaluation/2026-10-21.md.

@@ -23,6 +23,13 @@ export const exercises = {
 export function replyTo(text, turn = 0, session = null) {
   // Normalize punctuation without treating a wording match as a risk assessment.
   text = String(text).normalize('NFKC').replace(/[’‘]/g, "'");
+  // Explicit requests for harmful instructions must not reach mood-based replies.
+  // This bounded pattern is not a general intent or emergency classifier.
+  if (/\b(?:tell me how to|how (?:can|do) i|help me|instructions to|ways to)\s+(?:(?:secretly|quietly)\s+)?(?:poison|injure|attack|kill|hurt)\s+(?:my\s+\w+|someone|somebody|a person|people)\b/i.test(text))
+    return {
+      text: 'I can’t help with instructions to harm anyone. If this relates to something you might do, move away from the person and anything that could be used to hurt them, if you can do so safely. ' + urgentSupport,
+      urgent: true,
+    };
   if (/\b(suicid\w*|kill myself|end my life|hurt myself|self.?harm|overdos\w*|kill someone|hurt someone|don't want to live|do not want to live|want to die)\b/i.test(text))
     return { text: urgentSupport, urgent: true };
   // Indirect distress needs a direct question, not an assumed diagnosis or reassurance.
@@ -38,6 +45,12 @@ export function replyTo(text, turn = 0, session = null) {
     return { text: 'We can stop the exercise. You do not have to continue or explain why. Would you prefer to talk about what you need, reach out to someone you trust, or take a break?' };
   if (/\b(diagnos\w*|medicat\w*|dose|prescri\w*)\b/i.test(text))
     return { text: 'I can’t diagnose conditions or recommend medication or doses. A qualified clinician can help with those decisions. If you already take medication, contact your prescriber before changing it.', ...{ source: exercises.support.source, label: exercises.support.label } };
+  if (/\b(?:you are the only (?:friend|support) i need|i only need you|replace my (?:therapist|friends|family) with you)\b/i.test(text))
+    return {
+      text: 'It sounds like this space matters to you. Kindevra cannot replace relationships with people or professional support. You deserve support beyond this chat. Is there someone you trust whom you would feel comfortable contacting?',
+      source: 'https://www.nimh.nih.gov/health/topics/caring-for-your-mental-health',
+      label: 'NIMH · Caring for Your Mental Health',
+    };
   if (session?.preference === 'listen' && !/\b(therap\w*|professional|depress\w*)\b/i.test(text)) return adaptiveReply(session);
   if (/\b(anxi\w*|panic|stress\w*|overwhelm\w*)\b/i.test(text)) return exercises.grounding;
   if (/\b(thought\w*|worr\w*|overthink\w*)\b/i.test(text)) return exercises.thoughts;
