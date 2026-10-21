@@ -39,3 +39,7 @@ Run `node evaluation/run.mjs` for the broader scenario suite. It currently repor
 
 ## Adaptive support prototype
 See [requirements and research](REQUIREMENTS.md). Optional check-ins now influence small-step replies; listen-first is the default. Simple first-person phrases can suggest a check-in, which must be accepted before it changes context. Check-in changes prompt clarification rather than a clinical interpretation. Forgetting active check-in context leaves earlier visible messages until Clear conversation is used.
+
+## License
+
+Original Kindevra code and documentation are licensed under the [MIT License](LICENSE). See [third-party notices](THIRD_PARTY_NOTICES.md) for external psychology resources and their separate terms. The license does not establish clinical validation.
