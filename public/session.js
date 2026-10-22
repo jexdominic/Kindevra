@@ -1,6 +1,6 @@
 export const moods = ['Heavy', 'Low', 'Okay', 'Good', 'Bright'];
 export function createSession() {
-  return { mood: null, previousMood: null, preference: 'listen' };
+  return { mood: null, previousMood: null, preference: 'listen', exercisesPaused: false };
 }
 export function checkIn(session, mood) {
   if (!moods.includes(mood)) throw new Error('Unknown mood');

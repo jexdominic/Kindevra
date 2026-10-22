@@ -38,3 +38,11 @@ Follow REQUIREMENTS.md for future development. Prototype now has optional confir
 - [ ] Next: negation, unverified beliefs, and identity-sensitive responses; broaden quoted/hypothetical and multi-turn evaluations.
 
 Earlier dated results remain historical. See evaluation/2026-10-21.md for current limitations. Refusal memory and browser tests remain pending.
+
+## October 22 preference-memory increment
+- [x] Remember requests to stop automatic exercises within the current session.
+- [x] Require explicit resumption; preserve safety and professional-support boundaries.
+- [x] Add five session-sequence checks: all 23 unit tests pass.
+- [ ] Browser verification, richer refusal interpretation and the three known scenario failures remain open.
+
+See evaluation/2026-10-22.md. This increment alone does not warrant a LinkedIn progress post.

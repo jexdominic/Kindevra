@@ -23,7 +23,7 @@ Requirements below are product-design inferences from those sources and the user
 | P1-01 | Wider state-sensitive support (user request) | Confirm anxiety, anger, grief, loneliness, numbness and mixed feelings; offer state-appropriate options reviewed by a clinician | Planned |
 | P1-02 | Useful memory with control (S1) | Separate consent before cross-session storage; edit, export and delete; explicit retention | Planned |
 | P1-03 | Accessible help (S2) | Keyboard and screen-reader testing, readable mobile layout, reduced-motion behavior, no compulsory disclosures | Manual testing pending |
-| P1-04 | Adapt to feedback (S1) | Helpful / not helpful feedback changes the next suggestion; remember declined exercises in session; avoid repetitive prompts | Planned |
+| P1-04 | Adapt to feedback (S1) | Helpful / not helpful feedback changes the next suggestion; remember declined exercises in session; avoid repetitive prompts | Partial: session refusal memory implemented; broader feedback and repetition handling planned |
 | P2-01 | Model-based interpretation | Evaluate ambiguity, negation, sarcasm, language variation and temporal context with abstention; explain interpretations and allow correction | Planned; no model connected |
 
 ## State and response contract

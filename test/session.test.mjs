@@ -34,5 +34,5 @@ test('positive mood and listening never suppress explicit danger or medical boun
 });
 test('new session drops old context', () => {
   const old = createSession(); checkIn(old, 'Low'); old.preference = 'steps';
-  assert.deepEqual(createSession(), { mood: null, previousMood: null, preference: 'listen' });
+  assert.deepEqual(createSession(), { mood: null, previousMood: null, preference: 'listen', exercisesPaused: false });
 });

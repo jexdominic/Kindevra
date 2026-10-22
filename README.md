@@ -43,3 +43,5 @@ See [requirements and research](REQUIREMENTS.md). Optional check-ins now influen
 ## License
 
 Original Kindevra code and documentation are licensed under the [MIT License](LICENSE). See [third-party notices](THIRD_PARTY_NOTICES.md) for external psychology resources and their separate terms. The license does not establish clinical validation.
+
+Requests to stop an exercise pause automatic exercise suggestions for the current visit. Say “resume exercises” to enable them again; the selected support preference still applies. Library practices remain available by choice. Clear conversation or refresh resets this preference.

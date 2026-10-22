@@ -41,8 +41,10 @@ export function replyTo(text, turn = 0, session = null) {
       urgent: true,
     };
   // Explicit risk above takes priority even when someone also asks to stop an exercise.
-  if (/\b(stop|skip|don't want|do not want|makes? me (?:feel )?worse)\b/i.test(text) && /\b(grounding|exercise|breathing)\b/i.test(text))
-    return { text: 'We can stop the exercise. You do not have to continue or explain why. Would you prefer to talk about what you need, reach out to someone you trust, or take a break?' };
+  if (/\b(stop|skip|don't want|do not want|makes? me (?:feel )?worse)\b/i.test(text) && /\b(grounding|exercise|breathing)\b/i.test(text)) {
+    if (session) session.exercisesPaused = true;
+    return { text: 'We can stop the exercise. You do not have to continue or explain why. Would you prefer to talk about what you need, reach out to someone you trust, or take a break?' + (session ? ' Automatic exercises are paused for this visit. Say “resume exercises” if you want suggestions again. You can still choose a library practice yourself.' : '') };
+  }
   if (/\b(diagnos\w*|medicat\w*|dose|prescri\w*)\b/i.test(text))
     return { text: 'I can’t diagnose conditions or recommend medication or doses. A qualified clinician can help with those decisions. If you already take medication, contact your prescriber before changing it.', ...{ source: exercises.support.source, label: exercises.support.label } };
   if (/\b(?:you are the only (?:friend|support) i need|i only need you|replace my (?:therapist|friends|family) with you)\b/i.test(text))
@@ -51,6 +53,13 @@ export function replyTo(text, turn = 0, session = null) {
       source: 'https://www.nimh.nih.gov/health/topics/caring-for-your-mental-health',
       label: 'NIMH · Caring for Your Mental Health',
     };
+  if (session && /^(?:please )?resume exercises[.!]?$/i.test(text.trim())) {
+    session.exercisesPaused = false;
+    return { text: 'Exercise suggestions are available again. Your listening or small-step preference still applies, and you can stop any time.' };
+  }
+  if (session?.exercisesPaused && /\b(therap\w*|professional|depress\w*)\b/i.test(text)) return exercises.support;
+  if (session?.exercisesPaused)
+    return { text: 'Automatic exercises are still paused, as you asked. What would you like me to understand about what is happening? You can take a break, or say “resume exercises” if you want suggestions again.' };
   if (session?.preference === 'listen' && !/\b(therap\w*|professional|depress\w*)\b/i.test(text)) return adaptiveReply(session);
   if (/\b(anxi\w*|panic|stress\w*|overwhelm\w*)\b/i.test(text)) return exercises.grounding;
   if (/\b(thought\w*|worr\w*|overthink\w*)\b/i.test(text)) return exercises.thoughts;
