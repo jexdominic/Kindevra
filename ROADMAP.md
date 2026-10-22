@@ -46,3 +46,13 @@ Earlier dated results remain historical. See evaluation/2026-10-21.md for curren
 - [ ] Browser verification, richer refusal interpretation and the three known scenario failures remain open.
 
 See evaluation/2026-10-22.md. This increment alone does not warrant a LinkedIn progress post.
+
+## October 22 additional response-development increment
+- [x] Add a source-grounded uncertainty and human-support response for selected unverified-experience wording.
+- [x] Register NIMH and NSW Health sources with rights constraints, retrieval tags and pending clinical review.
+- [x] Add 15 separate regression fixtures covering paraphrases, ordinary contexts and boundary priority in three session contexts; 38/38 unit tests pass.
+- [x] Re-run unchanged original scenarios: 11/13 pass; preserve failure exit status.
+- [ ] Resolve remaining crisis-negation and identity-respect failures; expand beyond developer-authored wording fixtures.
+- [ ] Qualified clinical review and browser verification remain outstanding. No general psychosis detection, model training or clinical validation is claimed.
+
+The earlier dated counts above are historical. Current results and limitations are recorded in evaluation/2026-10-22.md.

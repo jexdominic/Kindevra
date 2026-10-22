@@ -4,6 +4,7 @@ const files = {
   '/': ['index.html', 'text/html'],
   '/app.js': ['app.js', 'text/javascript'],
   '/support.js': ['support.js', 'text/javascript'],
+  '/belief-support.js': ['belief-support.js', 'text/javascript'],
   '/session.js': ['session.js', 'text/javascript'],
   '/style.css': ['style.css', 'text/css'],
 };

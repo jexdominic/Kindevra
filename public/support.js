@@ -1,4 +1,5 @@
 import { adaptiveReply } from './session.js';
+import { needsBeliefSupport, beliefSupport } from './belief-support.js';
 export const urgentSupport = 'If you might act on thoughts of harming yourself or someone else, or you have already taken something harmful, contact local emergency services or go to the nearest emergency department now. If possible, ask a trusted person to stay with you and move away from anything you could use to hurt yourself. Kindevra cannot monitor your safety or contact help for you.';
 export const exercises = {
   grounding: {
@@ -53,6 +54,9 @@ export function replyTo(text, turn = 0, session = null) {
       source: 'https://www.nimh.nih.gov/health/topics/caring-for-your-mental-health',
       label: 'NIMH · Caring for Your Mental Health',
     };
+  // Offer uncertainty and human support before generic thought exercises.
+  // Earlier crisis, refusal, medical and dependency boundaries still apply.
+  if (needsBeliefSupport(text)) return { ...beliefSupport };
   if (session && /^(?:please )?resume exercises[.!]?$/i.test(text.trim())) {
     session.exercisesPaused = false;
     return { text: 'Exercise suggestions are available again. Your listening or small-step preference still applies, and you can stop any time.' };

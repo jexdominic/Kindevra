@@ -73,5 +73,46 @@
       "Does not validate chatbot dependency detection",
       "Do not assume family or a particular contact is safe for every user"
     ]
+  },
+  {
+    "id": "nimh-psychosis",
+    "title": "Understanding Psychosis",
+    "url": "https://www.nimh.nih.gov/health/publications/understanding-psychosis",
+    "publisher": "NIMH",
+    "checked": "2026-10-22",
+    "summary": "Unusual experiences have multiple possible causes. Qualified professionals assess them; persistent or increasing difficulties warrant seeking care. This source does not validate chatbot detection.",
+    "tags": [
+      "unusual-experiences",
+      "professional-referral",
+      "uncertainty"
+    ],
+    "rights": "Publication text is public domain; images excluded. Original summary and link only; no full-text ingestion.",
+    "clinicalReview": "pending",
+    "limitations": [
+      "Not a diagnostic or chatbot evaluation tool",
+      "No endorsement of Kindevra",
+      "Wording routes are provisional engineering choices"
+    ]
+  },
+  {
+    "id": "nsw-psychosis-communication",
+    "title": "How can I communicate with someone experiencing psychosis?",
+    "url": "https://www.health.nsw.gov.au/mentalhealth/psychosocial/strategies/Pages/communicating-psychosis.aspx",
+    "publisher": "NSW Health",
+    "checked": "2026-10-22",
+    "summary": "Use respectful, calm communication and attend to the person's feelings without judging or arguing about their beliefs. Respect their wish not to talk.",
+    "tags": [
+      "nonjudgmental-support",
+      "unusual-experiences",
+      "delusion-boundary",
+      "autonomy"
+    ],
+    "rights": "Reuse permissions unverified. Original short summary and link only; no full text, images or training ingestion.",
+    "clinicalReview": "pending",
+    "limitations": [
+      "Guidance for human support, not a validated chatbot protocol",
+      "Cannot establish whether a reported experience is true",
+      "Requires clinical review before claims of therapeutic benefit"
+    ]
   }
 ]
