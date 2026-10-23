@@ -1,8 +1,5 @@
 # Internal personalization development
 
-Branch: `codex/private-user-profiles`. Keep this work in a draft pull request;
-do not merge into main, enable auto-merge, or deploy it.
-
 ## First increment — October 23, 2026
 
 The app builds a bounded internal profile asynchronously from explicit practice
@@ -30,7 +27,7 @@ product UI and external transmissions, not secret from the person controlling
 the browser or its developer tools. Persistent per-person profiles are not yet
 implemented: there are no authenticated users to isolate them safely.
 
-## Daily continuation at 18:30 Europe/Warsaw
+## Validation
 
 ### October 23 follow-up: corrections and consistent normalization
 
@@ -45,16 +42,12 @@ Reproduced both failures before the fix. Afterward, `node --test` passes 78/78
 checks and the existing scenario suite passes 13/13. No storage or sharing was
 added. Browser interaction verification remains pending.
 
-Validation for this increment: `node --test` passes 75/75 checks;
-`node evaluation/run.mjs` passes 13/13 scenarios. These are engineering checks,
-not clinical validation. Browser interaction verification remains pending: the
-in-app browser could not connect to the local preview in this environment.
+These are engineering checks, not clinical validation. Browser interaction
+verification remains pending because the local preview connection failed.
 
-- Extend explicit preference coverage with ambiguity and correction tests.
-- Evaluate multi-turn usefulness and repetition with synthetic scenarios.
-- Add browser lifecycle coverage, including queued updates and clear/reset.
-- Scope authenticated storage, consent and retention before cross-visit memory.
-- Keep clinical inference out of this profile; do not claim clinical validation.
+## Remaining work
 
-Keep changes bounded and tested, update the existing pull request, and never
-merge into main without a new explicit instruction from the user.
+- Broader explicit preference coverage and ambiguity handling.
+- Multi-turn usefulness and repetition evaluation with synthetic scenarios.
+- Browser lifecycle coverage, including queued updates and clear/reset.
+- Authentication, consent and retention design for potential cross-visit memory.
