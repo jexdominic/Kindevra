@@ -1,0 +1,7 @@
+# Explicit clarification and crisis wording
+
+Source: [NIMH Warning Signs of Suicide](https://www.nimh.nih.gov/health/publications/warning-signs-of-suicide), rechecked October 23, 2026; metadata and rights in sources.json (`nimh-warning`). NIMH lists wanting to die, burdensomeness and lack of reasons for living among warning signs. These can coexist with a denial. The source does not validate a chatbot classifier or any negation rule. Clinical review is pending.
+
+Product rule: exempt only an opening, complete “I am not suicidal” or “I'm not suicidal” sentence from the direct keyword scan. It must end with a period followed by whitespace/end, or end the message. The remaining text is still scanned. Indirect-distress and harmful-request routes continue checking the whole message. Do not store a safety label or infer that the user is safe. Acknowledge the clarification and invite their chosen topic; other boundaries and exercise refusal still take priority.
+
+This is a narrow English wording exception, not general negation understanding. Other punctuation, quoted statements, historical reports, qualifiers and paraphrases can still trigger inappropriate emergency wording. Danger outside the existing phrase list can still be missed, including implicit plans or actions. Earlier messages are not assessed as a clinical history. A denial does not establish absence of risk. Qualified review and broader independent evaluation remain required before clinical-readiness claims.

@@ -35,6 +35,11 @@ function needsIdentitySupport(text) {
 export function replyTo(text, turn = 0, session = null) {
   // Normalize punctuation without treating a wording match as a risk assessment.
   text = String(text).normalize('NFKC').replace(/[’‘]/g, "'");
+  // Only a complete, unqualified opening self-report is exempted from the
+  // keyword scan. Scan the remaining message; never store a "safe" state.
+  // This narrow product rule is not a clinical risk assessment.
+  const denial = text.match(/^\s*i(?: am|'m) not suicidal(?:\.(?=\s|$)|$)/i);
+  const riskText = denial ? text.slice(denial[0].length) : text;
   // Explicit requests for harmful instructions must not reach mood-based replies.
   // This bounded pattern is not a general intent or emergency classifier.
   if (/\b(?:tell me how to|how (?:can|do) i|help me|instructions to|ways to)\s+(?:(?:secretly|quietly)\s+)?(?:poison|injure|attack|kill|hurt)\s+(?:my\s+\w+|someone|somebody|a person|people)\b/i.test(text))
@@ -42,7 +47,7 @@ export function replyTo(text, turn = 0, session = null) {
       text: 'I can’t help with instructions to harm anyone. If this relates to something you might do, move away from the person and anything that could be used to hurt them, if you can do so safely. ' + urgentSupport,
       urgent: true,
     };
-  if (/\b(suicid\w*|kill myself|end my life|hurt myself|self.?harm|overdos\w*|kill someone|hurt someone|don't want to live|do not want to live|want to die)\b/i.test(text))
+  if (/\b(suicid\w*|kill myself|end my life|hurt myself|self.?harm|overdos\w*|kill someone|hurt someone|don't want to live|do not want to live|want to die)\b/i.test(riskText))
     return { text: urgentSupport, urgent: true };
   // Indirect distress needs a direct question, not an assumed diagnosis or reassurance.
   if (/\b(better off without me|no reason to live|wish i (?:would|could) not wake up|wish i wouldn't wake up)\b/i.test(text))
@@ -81,6 +86,10 @@ export function replyTo(text, turn = 0, session = null) {
   if (session?.exercisesPaused && /\b(therap\w*|professional|depress\w*)\b/i.test(text)) return exercises.support;
   if (session?.exercisesPaused)
     return { text: 'Automatic exercises are still paused, as you asked. What would you like me to understand about what is happening? You can take a break, or say “resume exercises” if you want suggestions again.' };
+  if (denial && !/\b(therap\w*|professional|depress\w*)\b/i.test(text))
+    return { text: /\b(work|job)\b/i.test(riskText)
+      ? 'Thanks for clarifying. What has been difficult at work, and what kind of support would help right now?'
+      : 'Thanks for clarifying. What would you like support with right now?' };
   if (session?.preference === 'listen' && !/\b(therap\w*|professional|depress\w*)\b/i.test(text)) return adaptiveReply(session);
   if (/\b(anxi\w*|panic|stress\w*|overwhelm\w*)\b/i.test(text)) return exercises.grounding;
   if (/\b(thought\w*|worr\w*|overthink\w*)\b/i.test(text)) return exercises.thoughts;

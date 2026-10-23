@@ -65,3 +65,11 @@ The earlier dated counts above are historical. Current results and limitations a
 - [ ] Resolve crisis negation, then broaden independent, multi-turn and bias evaluations; qualified clinical and browser review remain outstanding.
 
 See evaluation/2026-10-23.md for current results and limitations. Earlier counts are historical.
+
+## October 23 clarification increment
+- [x] Handle a narrow explicit opening denial without treating it as a safety assessment; retain other crisis-language checks.
+- [x] Add 12 separate fixtures across three contexts and a multi-turn regression; 69/69 unit tests pass.
+- [x] Preserve all original scenarios: 13/13 now pass. Counts reflect fixture compliance only.
+- [ ] Broaden negation, temporal context and implicit-danger evaluations with independent and clinical review; browser interaction checks remain outstanding.
+
+See knowledge/negation-handling.md and the latest section of evaluation/2026-10-23.md. This does not establish clinical readiness or a LinkedIn milestone.
