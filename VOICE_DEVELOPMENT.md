@@ -1,6 +1,6 @@
 # Voice conversation development
 
-Voice work lives on `codex/voice-conversations`; keep its PR in draft and never merge or deploy without explicit user approval.
+The voice prototype adds optional speech input and spoken replies to the existing conversation flow.
 
 ## 2026-10-23: first increment
 
@@ -12,6 +12,6 @@ Voice work lives on `codex/voice-conversations`; keep its PR in draft and never 
 
 ## Next increments
 
-Test supported browsers with an explicitly authorized microphone session; add integration coverage for clear/navigation/urgent cancellation, improve state-driven controls, evaluate local-only speech support, and develop optional continuous turns with deliberate interruption behavior. Keep transcript review as the default until those behaviors are verified.
+Remaining work includes real microphone testing across supported browsers, integration coverage for clear/navigation/urgent cancellation, state-driven controls, local-only speech support, and continuous turns with deliberate interruption behavior. Transcript review remains the default while these behaviors are evaluated.
 
 Reference: https://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_API/Using_the_Web_Speech_API
