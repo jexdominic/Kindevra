@@ -4,7 +4,10 @@ const profiles = new WeakMap();
 
 export function preferenceSignal(text) {
   if (typeof text !== 'string') return null;
-  const match = /^(grounding|thought exercises) (helps? me|does not help me|do not help me)[.!]?$/i.exec(text.trim());
+  // Apply the same normalization as reply routing so acknowledgment and learning
+  // cannot disagree. Keep whole-message matching to abstain on quoted/ambiguous text.
+  const normalized = text.normalize('NFKC').replace(/[’‘]/g, "'").trim();
+  const match = /^(grounding|thought exercises) (helps? me|does not help me|do not help me|doesn't help me|don't help me)[.!]?$/i.exec(normalized);
   if (!match) return null;
   return Object.freeze({
     practice: match[1].toLowerCase() === 'grounding' ? 'grounding' : 'thoughts',

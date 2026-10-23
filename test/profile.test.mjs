@@ -55,6 +55,41 @@ test('profiles are isolated and absent from serializable session data', async ()
   assert.equal(JSON.stringify(first).includes('grounding'), false);
 });
 
+test('contracted negative feedback is acknowledged and prevents later suggestions', async () => {
+  for (const [text, practice, topic] of [
+    ["Grounding doesn't help me.", 'grounding', 'I feel stressed'],
+    ['Grounding doesn’t help me!', 'grounding', 'I feel overwhelmed'],
+    ["Thought exercises don't help me", 'thoughts', 'I am overthinking'],
+    ['Thought exercises don’t help me.', 'thoughts', 'I am worried'],
+  ]) {
+    const session = createSession(); session.preference = 'steps';
+    const updater = createProfileUpdater();
+    await learn(updater, session, practice === 'grounding' ? 'grounding helps me' : 'thought exercises help me');
+    assert.match(replyTo(text, 0, session).text, /use that preference/, text);
+    await learn(updater, session, text);
+    assert.equal(practiceDeclined(session, practice), true, text);
+    assert.notEqual(replyTo(topic, 0, session).text, exercises[practice].text, text);
+    assert.equal(session.exercisesPaused, false);
+  }
+});
+
+test('reply acknowledgment and background learning agree on Unicode feedback', async () => {
+  const session = createSession(); session.preference = 'steps';
+  const text = 'Ｇｒｏｕｎｄｉｎｇ helps me.';
+  assert.match(replyTo(text, 0, session).text, /use that preference/);
+  await learn(createProfileUpdater(), session, text);
+  assert.deepEqual(replyTo('What now?', 0, session), exercises.grounding);
+});
+
+test('contractions remain narrow self-reports rather than quoted or qualified preferences', () => {
+  for (const text of [
+    '“Grounding doesn’t help me”', "'grounding doesn't help me'",
+    "My friend says grounding doesn't help me", "Grounding doesn't help me?",
+    "Grounding doesn't help me sometimes", "Grounding doesn't help me, but thoughts do",
+    "If grounding doesn't help me", "Grounding didn't help me yesterday",
+  ]) assert.equal(preferenceSignal(text), null, text);
+});
+
 test('clear deletes learned preferences and prevents queued work from restoring them', () => {
   const jobs = [];
   const updater = createProfileUpdater(job => jobs.push(job));
