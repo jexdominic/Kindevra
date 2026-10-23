@@ -114,5 +114,27 @@
       "Cannot establish whether a reported experience is true",
       "Requires clinical review before claims of therapeutic benefit"
     ]
+  },
+  {
+    "id": "ukcp-conversion",
+    "title": "Conversion therapy",
+    "url": "https://www.psychotherapy.org.uk/policy-and-research/public-policy/conversion-therapy/",
+    "publisher": "UK Council for Psychotherapy",
+    "checked": "2026-10-23",
+    "summary": "Identity is not an illness to cure. Support may help people explore feelings without steering them toward a preferred orientation or identity.",
+    "tags": [
+      "identity-respect",
+      "conversion-pressure",
+      "autonomy",
+      "bias",
+      "professional-support"
+    ],
+    "rights": "Copyright UKCP, all rights reserved. Original short summary and link only; no copied publication, images or training ingestion. Broader reuse requires rights review.",
+    "clinicalReview": "pending",
+    "limitations": [
+      "Professional-body guidance does not validate chatbot responses",
+      "No identity inference or clinical assessment",
+      "Narrow English wording rules can miss context"
+    ]
   }
 ]

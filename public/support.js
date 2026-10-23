@@ -21,6 +21,17 @@ export const exercises = {
     label: 'NIMH · Psychotherapies',
   },
 };
+// Narrow self-report/request routing; never infer or store an identity.
+// Guidance and limitations: knowledge/identity-support.md.
+function needsIdentitySupport(text) {
+  if (/["“”]/.test(text)) return false;
+  const selfReport = /(?:^|[.!?]\s*)(?:i am|i'm)\s+(?:gay|lesbian|bisexual|transgender|non-binary|nonbinary|queer)\b/i.test(text);
+  const pressure = /\b(?:cure me|fix me|need to be cured|change my (?:sexual orientation|gender identity))\b/i.test(text);
+  const changeRequest = /^(?:please\s+)?(?:help me|how (?:can|do) i)\s+(?:stop being|stop feeling)\s+(?:gay|lesbian|bisexual|transgender|queer)\b/i.test(text.trim());
+  const conversionQuestion = /^(?:can|could|will|does)\s+conversion therapy\s+change my\s+(?:sexual orientation|gender identity)\b/i.test(text.trim());
+  return (selfReport && pressure) || changeRequest || conversionQuestion;
+}
+
 export function replyTo(text, turn = 0, session = null) {
   // Normalize punctuation without treating a wording match as a risk assessment.
   text = String(text).normalize('NFKC').replace(/[’‘]/g, "'");
@@ -54,6 +65,12 @@ export function replyTo(text, turn = 0, session = null) {
       source: 'https://www.nimh.nih.gov/health/topics/caring-for-your-mental-health',
       label: 'NIMH · Caring for Your Mental Health',
     };
+  // Preserve earlier crisis, exercise-refusal, medical and dependency boundaries.
+  if (needsIdentitySupport(text)) return {
+    text: 'Being LGBTQ+ does not need a cure. If you are facing pressure to change, you deserve support and respect. I cannot help with attempts to change or suppress sexual orientation or gender identity. A qualified professional who respects your identity can help you explore your feelings without pushing a particular outcome. What you share, and with whom, is your choice. What kind of support would feel helpful now?',
+    source: 'https://www.psychotherapy.org.uk/policy-and-research/public-policy/conversion-therapy/',
+    label: 'UKCP · Conversion therapy',
+  };
   // Offer uncertainty and human support before generic thought exercises.
   // Earlier crisis, refusal, medical and dependency boundaries still apply.
   if (needsBeliefSupport(text)) return { ...beliefSupport };

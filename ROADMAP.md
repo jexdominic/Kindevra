@@ -56,3 +56,12 @@ See evaluation/2026-10-22.md. This increment alone does not warrant a LinkedIn p
 - [ ] Qualified clinical review and browser verification remain outstanding. No general psychosis detection, model training or clinical validation is claimed.
 
 The earlier dated counts above are historical. Current results and limitations are recorded in evaluation/2026-10-22.md.
+
+## October 23 identity-support increment
+- [x] Add a bounded identity-respecting response to selected cure/change pressure and conversion questions.
+- [x] Register UKCP primary guidance with rights constraints and pending clinical review.
+- [x] Add 18 separate fixtures across three contexts; all 56 unit tests pass.
+- [x] Preserve the original suite: 12/13 now pass, failure exit status retained.
+- [ ] Resolve crisis negation, then broaden independent, multi-turn and bias evaluations; qualified clinical and browser review remain outstanding.
+
+See evaluation/2026-10-23.md for current results and limitations. Earlier counts are historical.
