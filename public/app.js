@@ -1,6 +1,8 @@
+import { setupVoice } from './voice-ui.js';
 import { createSession, checkIn, suggestMood } from './session.js';
 import { replyTo, urgentSupport, exercises } from './support.js';
 const messages = document.querySelector('#messages');
+const voice = setupVoice();
 let turn = 0;
 let session = createSession();
 let pendingMood = null;
@@ -22,6 +24,7 @@ function addMessage(text, who = 'kindevra', source, label) {
   article.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
 }
 function reset() {
+  voice.stop();
   messages.replaceChildren(); turn = 0;
   session = createSession(); pendingMood = null;
   document.querySelector('#preference').value = 'listen';
@@ -34,9 +37,11 @@ function reset() {
 function send(text) {
   text = text.trim().slice(0, 2000);
   if (!text) return;
+  voice.stop();
   addMessage(text, 'user');
   const response = replyTo(text, turn++, session);
   addMessage(response.text, 'kindevra', response.source, response.label);
+  if (!response.urgent) voice.speak(response.text);
   pendingMood = response.urgent ? null : suggestMood(text);
   document.querySelector('#mood-suggestion').hidden = !pendingMood;
   if (pendingMood) document.querySelector('#suggestion-text').textContent = `Would “${pendingMood.toLowerCase()}” fit as a check-in? I may have misunderstood. You can also select a different mood above.`;
@@ -48,6 +53,7 @@ document.querySelector('#chat-form').addEventListener('submit', e => {
 document.querySelectorAll('[data-prompt]').forEach(b => b.addEventListener('click', () => send(b.dataset.prompt)));
 document.querySelector('#clear').addEventListener('click', reset);
 function showView(id) {
+  voice.stop();
   document.querySelectorAll('.view').forEach(v => v.hidden = v.id !== id);
   document.querySelectorAll('[data-view]').forEach(b => {
     b.classList.toggle('active', b.dataset.view === id);
@@ -76,7 +82,7 @@ document.querySelector('#forget-mood').addEventListener('click', () => {
   document.querySelector('#mood-note').textContent = 'Check-in context forgotten. Earlier chat messages remain until you clear the conversation.';
 });
 document.querySelector('#urgent-text').textContent = urgentSupport;
-document.querySelector('#help').addEventListener('click', () => document.querySelector('#support-dialog').showModal());
+document.querySelector('#help').addEventListener('click', () => { voice.stop(); document.querySelector('#support-dialog').showModal(); });
 document.querySelector('#close-support').addEventListener('click', () => document.querySelector('#support-dialog').close());
 Object.values(exercises).forEach(exercise => {
   const card = document.createElement('article'); card.className = 'exercise-card';

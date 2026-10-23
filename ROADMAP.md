@@ -6,7 +6,7 @@
 - [x] Source-backed initial educational content.
 - [x] Automated response-boundary checks.
 
-## Next daily increments
+## Next improvements
 - [ ] Add keyboard and browser interaction tests for navigation, reset, and support dialog.
 - [ ] Expand the reviewed knowledge schema: source, license, review status, contraindications, and retrieval tags.
 - [ ] Add a server-only language-model adapter with an explicit opt-in disclosure before sending messages externally. Provider credentials must remain server-side.
@@ -17,7 +17,7 @@
 - [ ] Prepare an installable app with deliberate offline behavior and no caching of private conversations.
 - [ ] Assess authentication, rate limiting, privacy, accessibility, and deployment before public release.
 
-Daily work should make a bounded, meaningful improvement, run relevant checks, and push source changes to the repository. Never commit user conversations or credentials.
+Changes are validated with relevant checks. User conversations and credentials are excluded from the repository.
 
 ## October 20 evaluation increment
 - [x] Add source metadata with rights constraints and pending review status.
