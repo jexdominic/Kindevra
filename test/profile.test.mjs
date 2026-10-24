@@ -118,3 +118,35 @@ test('personalization never overrides danger, medical guidance, topic or pause b
   assert.match(replyTo('What now?', 0, session).text, /still paused/);
   assert.equal(replyTo('I want to die', 0, session).urgent, true);
 });
+
+test('clearing one session preserves queued feedback for another session', () => {
+  const jobs = [];
+  const updater = createProfileUpdater(job => jobs.push(job));
+  const first = createSession(); const second = createSession();
+  updater.observe(first, 'grounding helps me');
+  updater.observe(second, 'thought exercises help me');
+  updater.clear(first);
+  jobs.forEach(job => job());
+  assert.equal(preferredPractice(first), null);
+  assert.equal(preferredPractice(second), 'thoughts');
+});
+
+test('clear invalidates all updaters for the session while allowing fresh feedback', () => {
+  const jobs = [];
+  const first = createProfileUpdater(job => jobs.push(job));
+  const second = createProfileUpdater(job => jobs.push(job));
+  const session = createSession();
+  first.observe(session, 'grounding helps me');
+  second.clear(session);
+  jobs.shift()();
+  assert.equal(preferredPractice(session), null);
+  first.observe(session, 'thought exercises help me');
+  jobs.shift()();
+  assert.equal(preferredPractice(session), 'thoughts');
+  second.observe(session, 'grounding does not help me');
+  first.clear(session);
+  second.clear(session);
+  jobs.shift()();
+  assert.equal(preferredPractice(session), null);
+  assert.equal(practiceDeclined(session, 'grounding'), false);
+});

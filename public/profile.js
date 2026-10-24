@@ -1,6 +1,8 @@
 // Internal, visit-only profiles. No transcripts, identifiers or inferred traits.
 // Weak keys keep separate visits isolated and let abandoned sessions be collected.
 const profiles = new WeakMap();
+// Shared cancellation tokens belong to sessions, independently of updater instances.
+const generations = new WeakMap();
 
 export function preferenceSignal(text) {
   if (typeof text !== 'string') return null;
@@ -16,15 +18,15 @@ export function preferenceSignal(text) {
 }
 
 export function createProfileUpdater(schedule = queueMicrotask) {
-  let generation = 0;
+
   return {
     observe(session, text) {
       // Extract before scheduling: queued work never retains conversation text.
       const signal = preferenceSignal(text);
       if (!signal || !session) return;
-      const observedGeneration = generation;
+      const observedGeneration = generations.get(session);
       schedule(() => {
-        if (observedGeneration !== generation) return;
+        if (observedGeneration !== generations.get(session)) return;
         const profile = profiles.get(session) ?? { grounding: null, thoughts: null, preferred: null };
         profile[signal.practice] = signal.helpful;
         if (signal.helpful) profile.preferred = signal.practice;
@@ -33,7 +35,7 @@ export function createProfileUpdater(schedule = queueMicrotask) {
       });
     },
     clear(session) {
-      generation++;
+      generations.set(session, {});
       profiles.delete(session);
     },
   };

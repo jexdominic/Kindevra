@@ -51,3 +51,17 @@ verification remains pending because the local preview connection failed.
 - Multi-turn usefulness and repetition evaluation with synthetic scenarios.
 - Browser lifecycle coverage, including queued updates and clear/reset.
 - Authentication, consent and retention design for potential cross-visit memory.
+
+## October 24 validation: session-scoped clearing
+
+Pending profile updates now use cancellation tokens shared by session rather
+than a counter owned by each updater. Clearing a session cancels all its pending
+updates, including work queued by another updater, without discarding feedback
+for unrelated sessions. Fresh feedback after clearing still works. Tokens and
+preferences remain in weakly keyed, memory-only maps.
+
+Two regression tests reproduced the previous cancellation failures before the
+fix. The complete unit suite passes 80/80 checks and the response evaluation
+passes 13/13 scenarios. These lifecycle checks exercise multiple updaters and
+sessions; the current interface uses a single updater. Browser interaction
+verification remains outstanding.
