@@ -136,5 +136,26 @@
       "No identity inference or clinical assessment",
       "Narrow English wording rules can miss context"
     ]
+  },
+  {
+    "id": "nimh-medications",
+    "title": "Mental Health Medications",
+    "url": "https://www.nimh.nih.gov/health/topics/mental-health-medications",
+    "publisher": "NIMH",
+    "checked": "2026-10-24",
+    "summary": "Medication decisions depend on individual circumstances and belong with a health care provider. Changes or stopping medication need professional guidance. The overview is not a medical decision guide.",
+    "tags": [
+      "medication-boundary",
+      "prescriber",
+      "professional-support",
+      "compound-requests"
+    ],
+    "rights": "Original short summary and link only; full-text and image reuse permissions not assessed for this page. No full publication ingestion.",
+    "clinicalReview": "pending",
+    "limitations": [
+      "Does not validate chatbot triage or response ordering",
+      "Not a prescribing guide",
+      "No medication or dose recommendations are generated"
+    ]
   }
 ]
