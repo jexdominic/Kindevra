@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+Versioning now reserves increments for substantial features or major milestones. Minor improvements accumulate here until that threshold is met.
+
 ## 0.2.0 — 2026-10-24
 
 Source baseline: 324df039805e27fa3bc8cec5254ada36c4ca8405. This version groups completed improvements on the main branch since the initial 0.1.0 prototype.
