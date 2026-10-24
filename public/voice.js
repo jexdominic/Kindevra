@@ -7,7 +7,7 @@ export function createVoice({ Recognition, synthesis, Utterance, onText, onState
     const old = recognition;
     recognition = null;
     if (old) { try { old.abort(); } catch {} }
-    synthesis?.cancel();
+    try { synthesis?.cancel(); } catch {}
     onState('Ready');
   }
   function start(consent) {
@@ -32,11 +32,13 @@ export function createVoice({ Recognition, synthesis, Utterance, onText, onState
       instance.onerror = event => {
         if (token !== generation) return;
         failed = true;
+        stop();
         onState(event.error === 'not-allowed' ? 'Microphone permission denied. You can keep typing.' : 'Voice input failed. Try again or type your message.');
       };
       instance.onend = () => {
         if (token !== generation) return;
         recognition = null;
+        generation++;
         if (!failed) onState(heard ? 'Review your transcript, then send.' : 'No speech detected. Try again or type.');
       };
       onState('Waiting for microphone permission…');
@@ -50,11 +52,11 @@ export function createVoice({ Recognition, synthesis, Utterance, onText, onState
     try {
       const utterance = new Utterance(text);
       utterance.lang = 'en-US';
-      utterance.onend = () => { if (token === generation) onState('Ready'); };
-      utterance.onerror = () => { if (token === generation) onState('Playback unavailable. Read the reply above.'); };
+      utterance.onend = () => { if (token === generation) { generation++; onState('Ready'); } };
+      utterance.onerror = () => { if (token === generation) { stop(); onState('Playback unavailable. Read the reply above.'); } };
       onState('Speaking');
       synthesis.speak(utterance);
-    } catch { onState('Playback unavailable. Read the reply above.'); }
+    } catch { stop(); onState('Playback unavailable. Read the reply above.'); }
   }
   return { supported, start, stop, speak };
 }

@@ -15,3 +15,62 @@ test('permission errors survive end and reject results', () => { const f = fixtu
 test('new input cancels playback; old playback callback cannot change listening state', () => { const f = fixture(); f.voice.speak('reply', true); f.voice.start(true); f.instances[0].onstart(); f.spoken[0].onend(); assert.match(f.states.at(-1), /Listening/); });
 test('playback also requires consent', () => { const f = fixture(); f.voice.speak('private', false); assert.equal(f.spoken.length, 0); });
 test('unsupported browser falls back to text', () => { let state; const v = createVoice({onText() {}, onState(s) {state=s;} }); v.start(true); assert.equal(v.supported, false); assert.match(state, /unavailable/); });
+
+test('recognition completion rejects late results and state changes', () => {
+  const f = fixture();
+  f.voice.start(true);
+  const r = f.instances[0];
+  r.onend();
+  const completedState = f.states.at(-1);
+  r.onresult(f.result('late transcript'));
+  r.onstart();
+  r.onerror({ error: 'network' });
+  assert.deepEqual(f.texts, []);
+  assert.equal(f.states.at(-1), completedState);
+});
+
+test('recognition failure aborts capture and cannot return to listening', () => {
+  const f = fixture();
+  f.voice.start(true);
+  const r = f.instances[0];
+  r.onerror({ error: 'not-allowed' });
+  r.onstart();
+  r.onend();
+  assert.equal(r.aborted, true);
+  assert.match(f.states.at(-1), /denied/);
+  f.voice.start(true);
+  f.instances[1].onresult(f.result('retry succeeds'));
+  assert.deepEqual(f.texts, ['retry succeeds']);
+});
+
+test('a throwing cancellation service cannot prevent stop or transcript capture', () => {
+  let recognition;
+  const texts = [];
+  const voice = createVoice({
+    Recognition: class { constructor() { recognition = this; } start() {} abort() { throw new Error('unavailable'); } },
+    synthesis: { cancel() { throw new Error('unavailable'); } },
+    onText: text => texts.push(text), onState() {}
+  });
+  assert.doesNotThrow(() => voice.start(true));
+  recognition.onresult({ results: [Object.assign([{ transcript: 'hello' }], { isFinal: true })] });
+  assert.deepEqual(texts, ['hello']);
+  assert.doesNotThrow(() => voice.stop());
+  recognition.onresult({ results: [Object.assign([{ transcript: 'late' }], { isFinal: true })] });
+  assert.deepEqual(texts, ['hello']);
+});
+
+test('playback completion ignores subsequent error callbacks', () => {
+  const f = fixture();
+  f.voice.speak('reply', true);
+  f.spoken[0].onend();
+  f.spoken[0].onerror();
+  assert.equal(f.states.at(-1), 'Ready');
+});
+
+test('playback failure remains visible after late completion', () => {
+  const f = fixture();
+  f.voice.speak('reply', true);
+  f.spoken[0].onerror();
+  f.spoken[0].onend();
+  assert.match(f.states.at(-1), /Playback unavailable/);
+});
