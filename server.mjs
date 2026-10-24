@@ -6,6 +6,7 @@ const files = {
   '/support.js': ['support.js', 'text/javascript'],
   '/belief-support.js': ['belief-support.js', 'text/javascript'],
   '/session.js': ['session.js', 'text/javascript'],
+  '/profile.js': ['profile.js', 'text/javascript'],
   '/style.css': ['style.css', 'text/css'],
 };
 createServer(async (req, res) => {
