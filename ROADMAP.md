@@ -73,3 +73,11 @@ See evaluation/2026-10-23.md for current results and limitations. Earlier counts
 - [ ] Broaden negation, temporal context and implicit-danger evaluations with independent and clinical review; browser interaction checks remain outstanding.
 
 See knowledge/negation-handling.md and the latest section of evaluation/2026-10-23.md. This does not establish clinical readiness or a LinkedIn milestone.
+
+## Compound-request handling
+- [x] Preserve exercise refusal alongside medical questions and recognized urgent language.
+- [x] Link medication boundaries to a dedicated primary source with provenance and review status.
+- [x] Verify 12 additional compound-request fixtures across three contexts; 81 unit tests and all 13 original scenarios pass.
+- [ ] Broader intent combinations, independent evaluations and clinical review remain outstanding.
+
+See evaluation/2026-10-24-compound-requests.md. Version 0.2.0 is unchanged.
