@@ -16,7 +16,9 @@
     "limitations": [
       "Not a diagnostic tool",
       "Absence of listed signs does not establish safety"
-    ]
+    ],
+    "rightsReview": "pending",
+    "contentScope": "original-summary-and-link"
   },
   {
     "id": "who-stress",
@@ -36,7 +38,9 @@
       "May not suit every person or situation",
       "No promised clinical benefit",
       "Existing app prompts require license review before commercial release"
-    ]
+    ],
+    "rightsReview": "pending",
+    "contentScope": "original-summary-and-link"
   },
   {
     "id": "nimh-therapy",
@@ -53,7 +57,9 @@
     "clinicalReview": "pending",
     "limitations": [
       "Does not validate app responses"
-    ]
+    ],
+    "rightsReview": "pending",
+    "contentScope": "original-summary-and-link"
   },
   {
     "id": "nimh-self-care",
@@ -72,7 +78,9 @@
     "limitations": [
       "Does not validate chatbot dependency detection",
       "Do not assume family or a particular contact is safe for every user"
-    ]
+    ],
+    "rightsReview": "pending",
+    "contentScope": "original-summary-and-link"
   },
   {
     "id": "nimh-psychosis",
@@ -92,7 +100,9 @@
       "Not a diagnostic or chatbot evaluation tool",
       "No endorsement of Kindevra",
       "Wording routes are provisional engineering choices"
-    ]
+    ],
+    "rightsReview": "pending",
+    "contentScope": "original-summary-and-link"
   },
   {
     "id": "nsw-psychosis-communication",
@@ -113,7 +123,9 @@
       "Guidance for human support, not a validated chatbot protocol",
       "Cannot establish whether a reported experience is true",
       "Requires clinical review before claims of therapeutic benefit"
-    ]
+    ],
+    "rightsReview": "pending",
+    "contentScope": "original-summary-and-link"
   },
   {
     "id": "ukcp-conversion",
@@ -135,7 +147,9 @@
       "Professional-body guidance does not validate chatbot responses",
       "No identity inference or clinical assessment",
       "Narrow English wording rules can miss context"
-    ]
+    ],
+    "rightsReview": "pending",
+    "contentScope": "original-summary-and-link"
   },
   {
     "id": "nimh-medications",
@@ -156,6 +170,8 @@
       "Does not validate chatbot triage or response ordering",
       "Not a prescribing guide",
       "No medication or dose recommendations are generated"
-    ]
+    ],
+    "rightsReview": "pending",
+    "contentScope": "original-summary-and-link"
   }
 ]

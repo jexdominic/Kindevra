@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Added local knowledge-catalog validation and review-gated summary selection. All eight source records remain pending; existing scripted responses are unchanged.
+
 - Exercise refusals now persist alongside medical questions and recognized crisis language. Medication questions retain the prescriber boundary and link to NIMH medication guidance. Verified by 81 unit tests and 13 original scenarios; wording rules and clinical-review limitations remain.
 
 Versioning now reserves increments for substantial features or major milestones. Minor improvements accumulate here until that threshold is met.

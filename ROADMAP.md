@@ -81,3 +81,11 @@ See knowledge/negation-handling.md and the latest section of evaluation/2026-10-
 - [ ] Broader intent combinations, independent evaluations and clinical review remain outstanding.
 
 See evaluation/2026-10-24-compound-requests.md. Version 0.2.0 is unchanged.
+
+## Knowledge integrity
+- [x] Validate provenance, source references, rights-review status and summary content scope.
+- [x] Exclude pending or rejected records from tag-based summary eligibility; approval records require evidence metadata.
+- [x] Add 16 integrity tests; all 97 tests and 13 original scenarios pass.
+- [ ] Verify qualified clinical and scoped rights approvals before retrieval integration. Evidence authenticity, source aging and runtime integration remain open.
+
+See evaluation/2026-10-25-knowledge-integrity.md. No existing source was approved by this change.

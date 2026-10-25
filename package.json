@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "start": "node server.mjs",
-    "test": "node --test"
+    "test": "node --test",
+    "check:knowledge": "node knowledge/check.mjs"
   },
   "engines": {
     "node": ">=22"
