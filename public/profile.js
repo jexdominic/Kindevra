@@ -18,7 +18,6 @@ export function preferenceSignal(text) {
 }
 
 export function createProfileUpdater(schedule = queueMicrotask) {
-
   return {
     observe(session, text) {
       // Extract before scheduling: queued work never retains conversation text.
@@ -35,10 +34,14 @@ export function createProfileUpdater(schedule = queueMicrotask) {
       });
     },
     clear(session) {
-      generations.set(session, {});
-      profiles.delete(session);
+      clearProfile(session);
     },
   };
+}
+
+export function clearProfile(session) {
+  generations.set(session, {});
+  profiles.delete(session);
 }
 
 export function preferredPractice(session) {

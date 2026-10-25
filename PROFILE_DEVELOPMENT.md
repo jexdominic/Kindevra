@@ -65,3 +65,17 @@ fix. The complete unit suite passes 80/80 checks and the response evaluation
 passes 13/13 scenarios. These lifecycle checks exercise multiple updaters and
 sessions; the current interface uses a single updater. Browser interaction
 verification remains outstanding.
+
+## October 25 validation: preference-only forgetting
+
+The exact request “forget practice preferences” (optionally “please” or “my”)
+now erases learned practice choices without clearing the conversation, check-in,
+support mode or exercise pause. It invalidates pending updates for that session
+through the same clearing operation as conversation reset. Other sessions remain
+unaffected, and subsequent explicit feedback can establish new preferences.
+Feedback acknowledgments explain the command. Quoted, negated, questioned and
+mixed requests do not trigger erasure; existing safety routing takes precedence.
+
+The unit suite passes 83/83 checks and the scenario suite passes 13/13. Coverage
+includes preserving session state, cancelling queued learning, session isolation,
+and rejecting ambiguous commands. Browser interaction verification remains pending.

@@ -1,5 +1,5 @@
 import { adaptiveReply } from './session.js';
-import { preferenceSignal, preferredPractice, practiceDeclined } from './profile.js';
+import { preferenceSignal, preferredPractice, practiceDeclined, clearProfile } from './profile.js';
 import { needsBeliefSupport, beliefSupport } from './belief-support.js';
 export const urgentSupport = 'If you might act on thoughts of harming yourself or someone else, or you have already taken something harmful, contact local emergency services or go to the nearest emergency department now. If possible, ask a trusted person to stay with you and move away from anything you could use to hurt yourself. Kindevra cannot monitor your safety or contact help for you.';
 export const exercises = {
@@ -80,8 +80,12 @@ export function replyTo(text, turn = 0, session = null) {
   // Offer uncertainty and human support before generic thought exercises.
   // Earlier crisis, refusal, medical and dependency boundaries still apply.
   if (needsBeliefSupport(text)) return { ...beliefSupport };
+  if (session && /^(?:please )?forget (?:my )?practice preferences[.!]?$/i.test(text.trim())) {
+    clearProfile(session);
+    return { text: 'Practice preferences forgotten. Earlier messages, your check-in, support mode and any exercise pause remain. New practice feedback can set preferences again.' };
+  }
   if (session && preferenceSignal(text)) return {
-    text: 'Thanks for telling me what fits. I’ll use that preference for suggestions during this visit. You can change it, clear the conversation, or choose a library practice at any time.',
+    text: 'Thanks for telling me what fits. I’ll use that preference for suggestions during this visit. You can say “forget practice preferences” to reset these choices, or clear the conversation. Library practices remain available at any time.',
   };
   if (session && /^(?:please )?resume exercises[.!]?$/i.test(text.trim())) {
     session.exercisesPaused = false;

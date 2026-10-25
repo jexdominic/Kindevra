@@ -150,3 +150,49 @@ test('clear invalidates all updaters for the session while allowing fresh feedba
   assert.equal(preferredPractice(session), null);
   assert.equal(practiceDeclined(session, 'grounding'), false);
 });
+
+test('forgetting practice preferences preserves check-in, support mode and exercise pause', async () => {
+  const session = createSession();
+  session.mood = 'Low'; session.previousMood = 'Good';
+  session.preference = 'steps'; session.exercisesPaused = true;
+  const before = { ...session };
+  const updater = createProfileUpdater();
+  await learn(updater, session, 'grounding helps me');
+  await learn(updater, session, 'thought exercises do not help me');
+  const response = replyTo('Please forget my practice preferences.', 0, session);
+  assert.match(response.text, /Practice preferences forgotten/);
+  assert.equal(preferredPractice(session), null);
+  assert.equal(practiceDeclined(session, 'thoughts'), false);
+  assert.deepEqual(session, before);
+  assert.match(replyTo('What now?', 0, session).text, /still paused/);
+  await learn(updater, session, 'thought exercises help me');
+  assert.equal(preferredPractice(session), 'thoughts');
+});
+
+test('forget request cancels queued learning without changing another session', () => {
+  const jobs = [];
+  const updater = createProfileUpdater(job => jobs.push(job));
+  const first = createSession(); const second = createSession();
+  updater.observe(first, 'grounding helps me');
+  updater.observe(second, 'thought exercises help me');
+  assert.match(replyTo('forget practice preferences', 0, first).text, /Practice preferences forgotten/);
+  jobs.forEach(job => job());
+  assert.equal(preferredPractice(first), null);
+  assert.equal(preferredPractice(second), 'thoughts');
+});
+
+test('quoted, negated, questioned and mixed forget requests do not erase preferences', async () => {
+  const session = createSession();
+  await learn(createProfileUpdater(), session, 'grounding helps me');
+  for (const text of [
+    '"forget practice preferences"', 'Do not forget practice preferences',
+    'forget practice preferences?', 'My friend said forget practice preferences',
+    'forget practice preferences but keep grounding',
+  ]) {
+    replyTo(text, 0, session);
+    assert.equal(preferredPractice(session), 'grounding', text);
+  }
+  assert.equal(replyTo('forget practice preferences. I want to die', 0, session).urgent, true);
+  assert.match(replyTo('forget practice preferences. Change my medication dose', 0, session).text, /prescriber/);
+  assert.equal(preferredPractice(session), 'grounding');
+});
