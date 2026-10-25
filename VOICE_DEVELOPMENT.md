@@ -15,6 +15,11 @@ The voice prototype adds optional speech input and spoken replies to the existin
 Completed recognition sessions now reject late transcripts and status callbacks. Recognition errors abort capture, and completed or failed playback ignores subsequent events. Exceptions from browser cancellation services no longer interrupt the surrounding messaging flow.
 
 All 81 Node tests pass, including five additional regressions covering completion, permission failure recovery, cancellation exceptions and playback event ordering. These use simulated browser speech services; real microphone recognition and audible playback remain unverified. No UI layout or voice processing provider changed.
+## Browser fallback and UI integration
+
+The unavailable-input notice now survives conversation resets, stop actions and playback completion. Browsers without speech recognition can still use text messaging and supported speech playback.
+
+All 98 Node tests pass. Five new UI integration tests cover unsupported input, consent gating and withdrawal, hidden-page and page-exit cleanup, and prefixed recognition appending to an editable draft. The tests use a simulated DOM and speech services; real microphone and audible playback validation remain outstanding.
 ## Next increments
 
 Remaining work includes real microphone testing across supported browsers, integration coverage for clear/navigation/urgent cancellation, state-driven controls, local-only speech support, and continuous turns with deliberate interruption behavior. Transcript review remains the default while these behaviors are evaluated.
