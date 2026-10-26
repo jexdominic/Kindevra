@@ -27,7 +27,7 @@ export function createVoice({ Recognition, synthesis, Utterance, onText, onState
       instance.onresult = event => {
         if (token !== generation || heard || failed) return;
         const text = Array.from(event.results).filter(r => r.isFinal).map(r => r[0].transcript).join(' ').trim();
-        if (text) { heard = true; onText(text.slice(0, 2000)); }
+        if (text) { heard = true; onText(text.slice(0, 2000), { truncated: text.length > 2000 }); }
       };
       instance.onerror = event => {
         if (token !== generation) return;

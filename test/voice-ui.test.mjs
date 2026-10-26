@@ -86,3 +86,49 @@ test('prefixed recognition appends a transcript to the editable draft', () => {
   assert.equal(f.element('#message').value, 'Existing draft spoken continuation');
   assert.equal(f.spoken.length, 0);
 });
+
+test('typing cancels capture and protects an edited draft from late speech', () => {
+  const f = fixture();
+  f.start();
+  f.element('#message').value = 'Edited by hand';
+  f.element('#message').fire('input');
+  f.instances[0].onresult(f.result('late speech'));
+  assert.equal(f.instances[0].aborted, true);
+  assert.equal(f.element('#message').value, 'Edited by hand');
+});
+
+test('full composer prevents microphone capture', () => {
+  const f = fixture();
+  f.element('#message').value = 'a'.repeat(2000);
+  f.start();
+  assert.equal(f.instances.length, 0);
+  assert.match(f.element('#voice-status').textContent, /message is full/);
+});
+
+for (const existing of ['', 'Draft '.repeat(300)]) {
+  test(`transcript overflow is disclosed with ${existing.length} existing characters`, () => {
+    const f = fixture();
+    f.element('#message').value = existing;
+    f.start();
+    f.instances[0].onresult(f.result('b'.repeat(2100)));
+    f.instances[0].onend();
+    assert.equal(f.element('#message').value.length, 2000);
+    assert.match(f.element('#voice-status').textContent, /Some speech was not added/);
+    f.element('#message').value = '';
+    f.start();
+    f.instances[1].onresult(f.result('short message'));
+    f.instances[1].onend();
+    assert.equal(f.element('#voice-status').textContent, 'Review your transcript, then send.');
+  });
+}
+
+test('a short transcript that exceeds remaining space warns before recognition ends', () => {
+  const f = fixture();
+  f.element('#message').value = 'a'.repeat(1900);
+  f.start();
+  f.instances[0].onresult(f.result('b'.repeat(200)));
+  assert.equal(f.element('#message').value.length, 2000);
+  assert.match(f.element('#voice-status').textContent, /Some speech was not added/);
+  f.instances[0].onend();
+  assert.match(f.element('#voice-status').textContent, /Some speech was not added/);
+});
