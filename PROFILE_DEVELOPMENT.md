@@ -79,3 +79,16 @@ mixed requests do not trigger erasure; existing safety routing takes precedence.
 The unit suite passes 83/83 checks and the scenario suite passes 13/13. Coverage
 includes preserving session state, cancelling queued learning, session isolation,
 and rejecting ambiguous commands. Browser interaction verification remains pending.
+
+## October 26 validation: retaining helpful alternatives
+
+When the most recently preferred practice is declined, suggestions can fall back
+ to the other practice only if it still has explicit positive feedback. Previously,
+withdrawing the latest choice discarded the active preference even when another
+practice was known to help. Unknown, declined and forgotten alternatives are not
+selected. Listening mode, exercise pauses and safety routing keep precedence.
+
+A multi-turn regression reproduced the lost preference before the fix. Both
+practice orderings, declining both choices, forgetting alternatives and response
+boundaries are covered. All 85 unit checks and 13 scenario checks pass. Browser
+interaction verification remains pending.

@@ -196,3 +196,39 @@ test('quoted, negated, questioned and mixed forget requests do not erase prefere
   assert.match(replyTo('forget practice preferences. Change my medication dose', 0, session).text, /prescriber/);
   assert.equal(preferredPractice(session), 'grounding');
 });
+
+test('withdrawing the newest preference falls back to another explicitly helpful practice', async () => {
+  for (const [earlier, latest] of [['grounding', 'thoughts'], ['thoughts', 'grounding']]) {
+    const session = createSession(); session.preference = 'steps';
+    const updater = createProfileUpdater();
+    const phrase = practice => practice === 'grounding' ? 'grounding' : 'thought exercises';
+    await learn(updater, session, `${phrase(earlier)} help me`);
+    await learn(updater, session, `${phrase(latest)} help me`);
+    assert.equal(preferredPractice(session), latest);
+    await learn(updater, session, `${phrase(latest)} do not help me`);
+    assert.equal(preferredPractice(session), earlier);
+    assert.deepEqual(replyTo('What now?', 0, session), exercises[earlier]);
+    session.preference = 'listen';
+    assert.match(replyTo('What now?', 0, session).text, /without suggesting an exercise/);
+    session.preference = 'steps'; session.exercisesPaused = true;
+    assert.match(replyTo('What now?', 0, session).text, /still paused/);
+    assert.equal(replyTo('I want to die', 0, session).urgent, true);
+    await learn(updater, session, `${phrase(earlier)} do not help me`);
+    assert.equal(preferredPractice(session), null);
+    assert.equal(practiceDeclined(session, earlier), true);
+    assert.equal(practiceDeclined(session, latest), true);
+  }
+});
+
+test('fallback requires positive feedback and forgetting removes all alternatives', async () => {
+  const session = createSession();
+  const updater = createProfileUpdater();
+  await learn(updater, session, 'grounding helps me');
+  await learn(updater, session, 'grounding does not help me');
+  assert.equal(preferredPractice(session), null);
+  await learn(updater, session, 'thought exercises help me');
+  await learn(updater, session, 'grounding helps me');
+  replyTo('forget practice preferences', 0, session);
+  await learn(updater, session, 'grounding does not help me');
+  assert.equal(preferredPractice(session), null);
+});

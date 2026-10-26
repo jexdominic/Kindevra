@@ -29,7 +29,10 @@ export function createProfileUpdater(schedule = queueMicrotask) {
         const profile = profiles.get(session) ?? { grounding: null, thoughts: null, preferred: null };
         profile[signal.practice] = signal.helpful;
         if (signal.helpful) profile.preferred = signal.practice;
-        else if (profile.preferred === signal.practice) profile.preferred = null;
+        else if (profile.preferred === signal.practice) {
+          const alternative = signal.practice === 'grounding' ? 'thoughts' : 'grounding';
+          profile.preferred = profile[alternative] === true ? alternative : null;
+        }
         profiles.set(session, profile);
       });
     },
