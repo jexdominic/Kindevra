@@ -89,3 +89,11 @@ See evaluation/2026-10-24-compound-requests.md. Version 0.2.0 is unchanged.
 - [ ] Verify qualified clinical and scoped rights approvals before retrieval integration. Evidence authenticity, source aging and runtime integration remain open.
 
 See evaluation/2026-10-25-knowledge-integrity.md. No existing source was approved by this change.
+
+## Grief support
+- [x] Acknowledge selected personal grief disclosures with optional sharing and human-support options.
+- [x] Add NHS provenance, retrieval tags and pending rights/clinical review status.
+- [x] Add 15 separate fixtures and a session sequence; 113 tests and 13 original scenarios pass.
+- [ ] Broader paraphrases, multi-turn understanding and independent clinical review remain open.
+
+See evaluation/2026-10-26-grief.md. Version 0.2.0 is unchanged.

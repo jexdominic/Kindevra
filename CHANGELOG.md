@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Added source-linked support for selected grief disclosures, preserving existing safety boundaries and exercise pauses. Verified with 16 additional tests; broader language coverage and clinical review remain pending.
+
 - Added local knowledge-catalog validation and review-gated summary selection. All eight source records remain pending; existing scripted responses are unchanged.
 
 - Exercise refusals now persist alongside medical questions and recognized crisis language. Medication questions retain the prescriber boundary and link to NIMH medication guidance. Verified by 81 unit tests and 13 original scenarios; wording rules and clinical-review limitations remain.

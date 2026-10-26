@@ -173,5 +173,29 @@
     ],
     "rightsReview": "pending",
     "contentScope": "original-summary-and-link"
+  },
+  {
+    "id": "nhs-grief",
+    "title": "Grief after bereavement or loss",
+    "url": "https://www.nhs.uk/mental-health/feelings-symptoms-behaviours/feelings-and-symptoms/grief-bereavement-loss/",
+    "publisher": "NHS",
+    "checked": "2026-10-26",
+    "summary": "Responses to loss vary. Grief need not follow an ordered set of stages. Personal and professional support can help people who are finding it difficult to cope.",
+    "tags": [
+      "grief",
+      "bereavement",
+      "loss",
+      "empathy",
+      "professional-support"
+    ],
+    "rights": "Original short summary and link only. Page-specific reuse permissions have not been reviewed; no full-text or image ingestion.",
+    "clinicalReview": "pending",
+    "rightsReview": "pending",
+    "contentScope": "original-summary-and-link",
+    "limitations": [
+      "Does not validate chatbot recognition or responses",
+      "No diagnosis or recovery timeline can be inferred from a message",
+      "Local referral pathways differ"
+    ]
   }
 ]

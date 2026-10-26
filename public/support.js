@@ -32,6 +32,12 @@ function needsIdentitySupport(text) {
   return (selfReport && pressure) || changeRequest || conversionQuestion;
 }
 
+function mentionsPersonalGrief(text) {
+  if (/["“”]/.test(text)) return false;
+  return /(?:^|[.!?]\s*)(?:i am|i'm)\s+(?:grieving|bereaved)\b/i.test(text.trim())
+    || /(?:^|[.!?]\s*)my\s+(?:mother|father|mom|mum|dad|parent|partner|wife|husband|sister|brother|child|son|daughter|grandmother|grandfather|friend|dog|cat|pet)\s+(?:died|passed away)\b/i.test(text.trim());
+}
+
 export function replyTo(text, turn = 0, session = null) {
   // Normalize punctuation without treating a wording match as a risk assessment.
   text = String(text).normalize('NFKC').replace(/[’‘]/g, "'");
@@ -85,6 +91,11 @@ export function replyTo(text, turn = 0, session = null) {
   // Offer uncertainty and human support before generic thought exercises.
   // Earlier crisis, refusal, medical and dependency boundaries still apply.
   if (needsBeliefSupport(text)) return { ...beliefSupport };
+  if (mentionsPersonalGrief(text)) return {
+    text: 'I’m sorry you’re facing this loss. Grief can feel different for different people; you do not have to feel a particular way. If you want, you can tell me what feels hardest right now. If coping is difficult, support from someone you trust, a bereavement counsellor or a qualified health professional may help. You can choose how much to share.',
+    source: 'https://www.nhs.uk/mental-health/feelings-symptoms-behaviours/feelings-and-symptoms/grief-bereavement-loss/',
+    label: 'NHS · Grief after bereavement or loss',
+  };
   if (session && /^(?:please )?resume exercises[.!]?$/i.test(text.trim())) {
     session.exercisesPaused = false;
     return { text: 'Exercise suggestions are available again. Your listening or small-step preference still applies, and you can stop any time.' };
