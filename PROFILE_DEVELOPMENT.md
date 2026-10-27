@@ -92,3 +92,29 @@ A multi-turn regression reproduced the lost preference before the fix. Both
 practice orderings, declining both choices, forgetting alternatives and response
 boundaries are covered. All 85 unit checks and 13 scenario checks pass. Browser
 interaction verification remains pending.
+
+## October 27 validation: browser lifecycle and integration
+
+Manual browser checks on the local app passed for explicit preference learning,
+changing the preferred practice, declining it and retaining a helpful alternative,
+listening mode, exercise pauses, preference-only forgetting, conversation reset,
+refresh and isolation between two tabs. A synthetic crisis message opened the
+urgent-support dialog instead of a personalized exercise. Preference forgetting
+preserved the selected check-in; forgetting the check-in then restored the generic
+small-step response. These checks resolve the earlier browser-verification gap.
+
+The feature branch incorporates the current response improvements from main,
+including grief support and precise exercise-refusal handling. The integration
+conflict preserved both routes alongside profile feedback. Follow-up browser
+checks confirmed grief support takes precedence over learned exercises, negated
+refusal leaves exercises enabled, and explicit refusal pauses them. An additional
+regression covers these interactions. All 149 unit checks and 13 scenarios pass.
+
+The feature diff was reviewed for data flow, rendering, lifecycle and response
+precedence. Profile data remains in tab memory; there is no new storage, logging,
+external request or profile display. The server serves only the new static module
+and retains its restrictive network policy. No material feature blockers were
+identified for the limited visit-only personalization scope. Phrase coverage is
+narrow, replies remain scripted, and this is not clinical validation or persistent
+user profiling. Browser coverage is manual in one browser, not a cross-browser
+or accessibility certification. Earlier validation counts remain historical.

@@ -1,0 +1,77 @@
+[
+  {
+    "id": "parent",
+    "input": "My mother died last month. I feel overwhelmed.",
+    "expected": "grief"
+  },
+  {
+    "id": "partner",
+    "input": "My partner passed away.",
+    "expected": "grief"
+  },
+  {
+    "id": "self-report",
+    "input": "I’m grieving and I feel numb.",
+    "expected": "grief"
+  },
+  {
+    "id": "anniversary",
+    "input": "My father died last year. The anniversary is hard.",
+    "expected": "grief"
+  },
+  {
+    "id": "pet",
+    "input": "My dog died yesterday.",
+    "expected": "grief"
+  },
+  {
+    "id": "ordinary-loss",
+    "input": "I lost my keys and feel stressed.",
+    "expected": "ordinary"
+  },
+  {
+    "id": "device",
+    "input": "My phone died.",
+    "expected": "ordinary"
+  },
+  {
+    "id": "negation",
+    "input": "I am not grieving. I want to discuss work.",
+    "expected": "ordinary"
+  },
+  {
+    "id": "quoted",
+    "input": "My friend said \"I am grieving\".",
+    "expected": "ordinary"
+  },
+  {
+    "id": "hypothetical",
+    "input": "What if my mother died?",
+    "expected": "ordinary"
+  },
+  {
+    "id": "crisis",
+    "input": "My mother died and I want to die.",
+    "expected": "urgent"
+  },
+  {
+    "id": "indirect",
+    "input": "I am grieving. Everyone would be better off without me.",
+    "expected": "urgent"
+  },
+  {
+    "id": "medication",
+    "input": "I am grieving. Should I change my medication dose?",
+    "expected": "medical"
+  },
+  {
+    "id": "refusal",
+    "input": "I am grieving. Please stop this exercise.",
+    "expected": "pause"
+  },
+  {
+    "id": "dependency",
+    "input": "I am grieving. I only need you.",
+    "expected": "dependency"
+  }
+]

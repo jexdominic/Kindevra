@@ -232,3 +232,13 @@ test('fallback requires positive feedback and forgetting removes all alternative
   await learn(updater, session, 'grounding does not help me');
   assert.equal(preferredPractice(session), null);
 });
+
+test('learned preferences preserve grief support and precise exercise refusal handling', async () => {
+  const session = createSession(); session.preference = 'steps';
+  await learn(createProfileUpdater(), session, 'grounding helps me');
+  assert.match(replyTo('My mother died', 0, session).text, /Grief/);
+  replyTo('I do not want to stop the exercise', 0, session);
+  assert.equal(session.exercisesPaused, false);
+  replyTo('stop the exercise', 0, session);
+  assert.equal(session.exercisesPaused, true);
+});

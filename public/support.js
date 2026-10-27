@@ -33,9 +33,30 @@ function needsIdentitySupport(text) {
   return (selfReport && pressure) || changeRequest || conversionQuestion;
 }
 
+function mentionsPersonalGrief(text) {
+  if (/["“”]/.test(text)) return false;
+  return /(?:^|[.!?]\s*)(?:i am|i'm)\s+(?:grieving|bereaved)\b/i.test(text.trim())
+    || /(?:^|[.!?]\s*)my\s+(?:mother|father|mom|mum|dad|parent|partner|wife|husband|sister|brother|child|son|daughter|grandmother|grandfather|friend|dog|cat|pet)\s+(?:died|passed away)\b/i.test(text.trim());
+}
+
+function declinesExercise(text) {
+  const unquoted = text.replace(/["“][^"”]*["”]/g, ' ').replace(/["“”].*$/g, ' ');
+  const practice = '(?:(?:this|the|that)\\s+)?(?:(?:grounding|breathing|thought)\\s+)?exercises?|grounding|breathing';
+  const request = new RegExp('^(?:please\\s+)?(?:stop|skip)\\s+(?:' + practice + ')\\b', 'i');
+  const decline = new RegExp('^i\\s+(?:do not|don\'t)\\s+want\\s+(?:to\\s+(?:do|try|continue)\\s+)?(?:' + practice + ')\\b', 'i');
+  const discomfort = new RegExp('^(?:' + practice + ')\\s+makes?\\s+me\\s+(?:feel\\s+)?worse\\b', 'i');
+  return unquoted.split(/[.!?\n]+|,|\bbut\b/i).some(part => {
+    const clause = part.trim();
+    return request.test(clause) || decline.test(clause) || discomfort.test(clause);
+  });
+}
+
 export function replyTo(text, turn = 0, session = null) {
   // Normalize punctuation without treating a wording match as a risk assessment.
   text = String(text).normalize('NFKC').replace(/[’‘]/g, "'");
+  // Exercise consent persists even when another concern determines the reply.
+  const stopExercise = declinesExercise(text);
+  if (stopExercise && session) session.exercisesPaused = true;
   // Only a complete, unqualified opening self-report is exempted from the
   // keyword scan. Scan the remaining message; never store a "safe" state.
   // This narrow product rule is not a clinical risk assessment.
@@ -58,13 +79,16 @@ export function replyTo(text, turn = 0, session = null) {
       label: 'NIMH · Warning Signs of Suicide',
       urgent: true,
     };
-  // Explicit risk above takes priority even when someone also asks to stop an exercise.
-  if (/\b(stop|skip|don't want|do not want|makes? me (?:feel )?worse)\b/i.test(text) && /\b(grounding|exercise|breathing)\b/i.test(text)) {
-    if (session) session.exercisesPaused = true;
+  const medicationQuestion = /\b(medicat\w*|dose|prescri\w*)\b/i.test(text);
+  if (medicationQuestion || /\bdiagnos\w*\b/i.test(text))
+    return {
+      text: (stopExercise ? 'We can stop the exercise. ' + (session ? 'Automatic exercises are paused for this visit. ' : '') : '') + 'I can’t diagnose conditions or recommend medication or doses. A qualified clinician can help with those decisions. If you already take medication, contact your prescriber before changing it.',
+      source: medicationQuestion ? 'https://www.nimh.nih.gov/health/topics/mental-health-medications' : exercises.support.source,
+      label: medicationQuestion ? 'NIMH · Mental Health Medications' : exercises.support.label,
+    };
+  if (stopExercise) {
     return { text: 'We can stop the exercise. You do not have to continue or explain why. Would you prefer to talk about what you need, reach out to someone you trust, or take a break?' + (session ? ' Automatic exercises are paused for this visit. Say “resume exercises” if you want suggestions again. You can still choose a library practice yourself.' : '') };
   }
-  if (/\b(diagnos\w*|medicat\w*|dose|prescri\w*)\b/i.test(text))
-    return { text: 'I can’t diagnose conditions or recommend medication or doses. A qualified clinician can help with those decisions. If you already take medication, contact your prescriber before changing it.', ...{ source: exercises.support.source, label: exercises.support.label } };
   if (/\b(?:you are the only (?:friend|support) i need|i only need you|replace my (?:therapist|friends|family) with you)\b/i.test(text))
     return {
       text: 'It sounds like this space matters to you. Kindevra cannot replace relationships with people or professional support. You deserve support beyond this chat. Is there someone you trust whom you would feel comfortable contacting?',
@@ -86,6 +110,11 @@ export function replyTo(text, turn = 0, session = null) {
   }
   if (session && preferenceSignal(text)) return {
     text: 'Thanks for telling me what fits. I’ll use that preference for suggestions during this visit. You can say “forget practice preferences” to reset these choices, or clear the conversation. Library practices remain available at any time.',
+  };
+  if (mentionsPersonalGrief(text)) return {
+    text: 'I’m sorry you’re facing this loss. Grief can feel different for different people; you do not have to feel a particular way. If you want, you can tell me what feels hardest right now. If coping is difficult, support from someone you trust, a bereavement counsellor or a qualified health professional may help. You can choose how much to share.',
+    source: 'https://www.nhs.uk/mental-health/feelings-symptoms-behaviours/feelings-and-symptoms/grief-bereavement-loss/',
+    label: 'NHS · Grief after bereavement or loss',
   };
   if (session && /^(?:please )?resume exercises[.!]?$/i.test(text.trim())) {
     session.exercisesPaused = false;

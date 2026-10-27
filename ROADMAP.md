@@ -73,3 +73,35 @@ See evaluation/2026-10-23.md for current results and limitations. Earlier counts
 - [ ] Broaden negation, temporal context and implicit-danger evaluations with independent and clinical review; browser interaction checks remain outstanding.
 
 See knowledge/negation-handling.md and the latest section of evaluation/2026-10-23.md. This does not establish clinical readiness or a LinkedIn milestone.
+
+## Compound-request handling
+- [x] Preserve exercise refusal alongside medical questions and recognized urgent language.
+- [x] Link medication boundaries to a dedicated primary source with provenance and review status.
+- [x] Verify 12 additional compound-request fixtures across three contexts; 81 unit tests and all 13 original scenarios pass.
+- [ ] Broader intent combinations, independent evaluations and clinical review remain outstanding.
+
+See evaluation/2026-10-24-compound-requests.md. Version 0.2.0 is unchanged.
+
+## Knowledge integrity
+- [x] Validate provenance, source references, rights-review status and summary content scope.
+- [x] Exclude pending or rejected records from tag-based summary eligibility; approval records require evidence metadata.
+- [x] Add 16 integrity tests; all 97 tests and 13 original scenarios pass.
+- [ ] Verify qualified clinical and scoped rights approvals before retrieval integration. Evidence authenticity, source aging and runtime integration remain open.
+
+See evaluation/2026-10-25-knowledge-integrity.md. No existing source was approved by this change.
+
+## Grief support
+- [x] Acknowledge selected personal grief disclosures with optional sharing and human-support options.
+- [x] Add NHS provenance, retrieval tags and pending rights/clinical review status.
+- [x] Add 15 separate fixtures and a session sequence; 113 tests and 13 original scenarios pass.
+- [ ] Broader paraphrases, multi-turn understanding and independent clinical review remain open.
+
+See evaluation/2026-10-26-grief.md. Version 0.2.0 is unchanged.
+
+## Exercise-consent context
+- [x] Distinguish selected genuine refusals from negated, quoted, hypothetical and unrelated mentions.
+- [x] Preserve existing pauses until explicit resumption and retain medical/crisis boundaries.
+- [x] Verify 19 additional tests; 132 tests and 13 original scenarios pass.
+- [ ] Broader reported speech, complex negation and independent intent evaluation remain open.
+
+See evaluation/2026-10-27-exercise-consent.md. Version remains 0.2.0.

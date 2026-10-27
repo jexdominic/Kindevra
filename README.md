@@ -12,7 +12,7 @@ node server.mjs
 
 Open http://127.0.0.1:4173. Run checks with `node --test`.
 
-## Version 0.1
+## Version 0.2.0
 
 - Responsive conversation interface with scripted, clearly labeled replies.
 - Session-only mood check-in; clear conversation also clears the mood.
@@ -35,7 +35,7 @@ See [ROADMAP.md](ROADMAP.md) for next milestones and [SAFETY.md](SAFETY.md) for 
 
 ## Response evaluation
 
-Run `node evaluation/run.mjs` for the broader scenario suite. It currently reports 10/13 passing and exits with a failure status for three known gaps. See [the dated report](evaluation/2026-10-21.md) and [scoring limitations](evaluation/README.md). Unit tests and scenario checks are not clinical validation. [Source metadata](knowledge/sources.json) records pending review and licensing restrictions.
+Run `node evaluation/run.mjs` for the broader scenario suite. Version 0.2.0 passes all 13 original scenarios and 69 unit tests; these narrow fixtures do not establish general contextual accuracy. See [the dated report](evaluation/2026-10-23.md) and [scoring limitations](evaluation/README.md). Unit tests and scenario checks are not clinical validation. [Source metadata](knowledge/sources.json) records pending review and licensing restrictions.
 
 ## Adaptive support prototype
 See [requirements and research](REQUIREMENTS.md). Optional check-ins now influence small-step replies; listen-first is the default. Simple first-person phrases can suggest a check-in, which must be accepted before it changes context. Check-in changes prompt clarification rather than a clinical interpretation. Forgetting active check-in context leaves earlier visible messages until Clear conversation is used.
@@ -53,3 +53,5 @@ priority. See [development scope and next steps](PROFILE_DEVELOPMENT.md).
 Original Kindevra code and documentation are licensed under the [MIT License](LICENSE). See [third-party notices](THIRD_PARTY_NOTICES.md) for external psychology resources and their separate terms. The license does not establish clinical validation.
 
 Requests to stop an exercise pause automatic exercise suggestions for the current visit. Say “resume exercises” to enable them again; the selected support preference still applies. Library practices remain available by choice. Clear conversation or refresh resets this preference.
+
+See [change history](CHANGELOG.md) and [versioning policy](VERSIONING.md).

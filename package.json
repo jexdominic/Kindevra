@@ -1,11 +1,12 @@
 {
   "name": "kindevra",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "type": "module",
   "scripts": {
     "start": "node server.mjs",
-    "test": "node --test"
+    "test": "node --test",
+    "check:knowledge": "node knowledge/check.mjs"
   },
   "engines": {
     "node": ">=22"
