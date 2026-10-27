@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Reduced false exercise pauses caused by selected negated requests, quotations and unrelated mentions. Genuine refusals still persist alongside medical and urgent concerns; complex intent remains limited.
+
 - Added source-linked support for selected grief disclosures, preserving existing safety boundaries and exercise pauses. Verified with 16 additional tests; broader language coverage and clinical review remain pending.
 
 - Added local knowledge-catalog validation and review-gated summary selection. All eight source records remain pending; existing scripted responses are unchanged.

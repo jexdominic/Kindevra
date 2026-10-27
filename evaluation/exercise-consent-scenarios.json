@@ -1,0 +1,92 @@
+[
+  {
+    "id": "stop",
+    "input": "Please stop the grounding exercise",
+    "pause": true
+  },
+  {
+    "id": "skip",
+    "input": "Skip this exercise",
+    "pause": true
+  },
+  {
+    "id": "decline",
+    "input": "I do not want this breathing exercise",
+    "pause": true
+  },
+  {
+    "id": "decline-do",
+    "input": "I don’t want to do this exercise",
+    "pause": true
+  },
+  {
+    "id": "discomfort",
+    "input": "This breathing exercise makes me feel worse",
+    "pause": true
+  },
+  {
+    "id": "grounding-worse",
+    "input": "Grounding makes me feel worse. Please stop.",
+    "pause": true
+  },
+  {
+    "id": "negated-stop",
+    "input": "Do not stop the grounding exercise",
+    "pause": false
+  },
+  {
+    "id": "contracted-stop",
+    "input": "Please don't stop this exercise",
+    "pause": false
+  },
+  {
+    "id": "unrelated-stop",
+    "input": "Stop the music. I like this exercise.",
+    "pause": false
+  },
+  {
+    "id": "unrelated-decline",
+    "input": "I do not want coffee. The breathing exercise helps.",
+    "pause": false
+  },
+  {
+    "id": "quoted",
+    "input": "My friend said \"stop this exercise\".",
+    "pause": false
+  },
+  {
+    "id": "hypothetical",
+    "input": "What if I want to stop this exercise?",
+    "pause": false
+  },
+  {
+    "id": "third-person",
+    "input": "My sister wants to stop this exercise.",
+    "pause": false
+  },
+  {
+    "id": "negated-discomfort",
+    "input": "This exercise does not make me feel worse.",
+    "pause": false
+  },
+  {
+    "id": "mixed",
+    "input": "Do not stop the music, but please stop this exercise.",
+    "pause": true
+  },
+  {
+    "id": "medical",
+    "input": "Stop this exercise. Should I change my medication dose?",
+    "pause": true
+  },
+  {
+    "id": "danger",
+    "input": "Stop this exercise. I want to die.",
+    "pause": true
+  },
+  {
+    "id": "danger-no-refusal",
+    "input": "Do not stop this exercise. I want to die.",
+    "pause": false
+  }
+]

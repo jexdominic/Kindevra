@@ -97,3 +97,11 @@ See evaluation/2026-10-25-knowledge-integrity.md. No existing source was approve
 - [ ] Broader paraphrases, multi-turn understanding and independent clinical review remain open.
 
 See evaluation/2026-10-26-grief.md. Version 0.2.0 is unchanged.
+
+## Exercise-consent context
+- [x] Distinguish selected genuine refusals from negated, quoted, hypothetical and unrelated mentions.
+- [x] Preserve existing pauses until explicit resumption and retain medical/crisis boundaries.
+- [x] Verify 19 additional tests; 132 tests and 13 original scenarios pass.
+- [ ] Broader reported speech, complex negation and independent intent evaluation remain open.
+
+See evaluation/2026-10-27-exercise-consent.md. Version remains 0.2.0.

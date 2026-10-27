@@ -38,11 +38,23 @@ function mentionsPersonalGrief(text) {
     || /(?:^|[.!?]\s*)my\s+(?:mother|father|mom|mum|dad|parent|partner|wife|husband|sister|brother|child|son|daughter|grandmother|grandfather|friend|dog|cat|pet)\s+(?:died|passed away)\b/i.test(text.trim());
 }
 
+function declinesExercise(text) {
+  const unquoted = text.replace(/["“][^"”]*["”]/g, ' ').replace(/["“”].*$/g, ' ');
+  const practice = '(?:(?:this|the|that)\\s+)?(?:(?:grounding|breathing|thought)\\s+)?exercises?|grounding|breathing';
+  const request = new RegExp('^(?:please\\s+)?(?:stop|skip)\\s+(?:' + practice + ')\\b', 'i');
+  const decline = new RegExp('^i\\s+(?:do not|don\'t)\\s+want\\s+(?:to\\s+(?:do|try|continue)\\s+)?(?:' + practice + ')\\b', 'i');
+  const discomfort = new RegExp('^(?:' + practice + ')\\s+makes?\\s+me\\s+(?:feel\\s+)?worse\\b', 'i');
+  return unquoted.split(/[.!?\n]+|,|\bbut\b/i).some(part => {
+    const clause = part.trim();
+    return request.test(clause) || decline.test(clause) || discomfort.test(clause);
+  });
+}
+
 export function replyTo(text, turn = 0, session = null) {
   // Normalize punctuation without treating a wording match as a risk assessment.
   text = String(text).normalize('NFKC').replace(/[’‘]/g, "'");
   // Exercise consent persists even when another concern determines the reply.
-  const stopExercise = /\b(stop|skip|don't want|do not want|makes? me (?:feel )?worse)\b/i.test(text) && /\b(grounding|exercise|breathing)\b/i.test(text);
+  const stopExercise = declinesExercise(text);
   if (stopExercise && session) session.exercisesPaused = true;
   // Only a complete, unqualified opening self-report is exempted from the
   // keyword scan. Scan the remaining message; never store a "safe" state.

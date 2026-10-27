@@ -53,3 +53,9 @@ Source basis: `nimh-medications` for professional medication guidance; response 
 `node --test test/grief.test.mjs` runs 15 separate fixtures from `grief-scenarios.json` in three contexts, plus a pause-and-safety sequence. Source basis: `nhs-grief`; routing and priority are product safeguards. A fixture scores 1 only if every context passes. Grief responses require acknowledgment of loss, variation in feelings, optional sharing, professional support and the source URL without an urgent flag. Counterexamples must not enter this route; boundary cases must preserve their expected response. The sequence checks that grief support does not clear a pause or suppress later urgent guidance.
 
 Phrase checks are limited proxies. Human review should reject imposed grief stages, recovery promises, diagnostic claims, pressure to disclose, dismissal of pet loss, or missed danger even if phrases match. Cases are synthetic, developer-authored and not held out; no clinician scoring has occurred.
+
+## Exercise-consent context regressions
+
+`node --test test/exercise-consent.test.mjs` runs 18 separate synthetic fixtures in `exercise-consent-scenarios.json` plus a state sequence. Basis: product-boundary, with existing `who-stress` context for optional exercises. A case scores 1 only if pause state matches the expected intent in both support modes, explicit refusals receive acknowledgment, and medication/danger cases preserve their boundary. Subsequent stress messages must respect a genuine pause. A separate sequence verifies that negated stopping does not silently resume exercises.
+
+Phrase and state assertions cannot establish general intent understanding. Human review should assess whether the user actually declined, whether separate intents were preserved, and whether refusal or resumption was inferred without adequate evidence. Cases are developer-authored, not held out or clinically scored.
