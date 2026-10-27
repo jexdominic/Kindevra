@@ -25,6 +25,11 @@ All 98 Node tests pass. Five new UI integration tests cover unsupported input, c
 Typing in the composer stops voice capture and playback, preventing delayed recognition from modifying an edited draft. A full composer blocks microphone capture. Speech that exceeds the 2,000-character limit now produces an immediate status warning, including when a short transcript exceeds the remaining space in an existing draft.
 
 All 103 Node tests pass, including five additional integration cases for draft edits, a full composer, transcript truncation and recovery. These checks use simulated DOM and speech services. Real microphone and audible playback validation remain outstanding.
+## Continuous turn orchestration
+
+A new internal conversation controller sequences listening, response generation, playback and the next listening turn. Stop and interruption abort the active operation and invalidate late completions. Consent is checked between stages; truncated transcripts become drafts for review, and urgent responses end the loop before playback or further capture.
+
+All 112 Node tests pass, including nine orchestration tests for turn order, stopping in each phase, interruption, consent, transcript review, urgent routing through the existing response engine, and audio failure. The controller is not yet connected to browser audio or exposed in the interface. Its capture and playback adapters must release resources on abort. Browser adapters, explicit continuous-mode controls and real microphone/playback validation remain necessary before release.
 ## Next increments
 
 Remaining work includes real microphone testing across supported browsers, integration coverage for clear/navigation/urgent cancellation, state-driven controls, local-only speech support, and continuous turns with deliberate interruption behavior. Transcript review remains the default while these behaviors are evaluated.
