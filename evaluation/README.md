@@ -59,3 +59,9 @@ Phrase checks are limited proxies. Human review should reject imposed grief stag
 `node --test test/exercise-consent.test.mjs` runs 18 separate synthetic fixtures in `exercise-consent-scenarios.json` plus a state sequence. Basis: product-boundary, with existing `who-stress` context for optional exercises. A case scores 1 only if pause state matches the expected intent in both support modes, explicit refusals receive acknowledgment, and medication/danger cases preserve their boundary. Subsequent stress messages must respect a genuine pause. A separate sequence verifies that negated stopping does not silently resume exercises.
 
 Phrase and state assertions cannot establish general intent understanding. Human review should assess whether the user actually declined, whether separate intents were preserved, and whether refusal or resumption was inferred without adequate evidence. Cases are developer-authored, not held out or clinically scored.
+
+## Provenance coverage
+
+`node knowledge/check.mjs` discovers `scenarios.json` and every `*-scenarios.json` file directly in this directory. Each fixture has a `basis`: a source-register ID informing the response expectation, or `product-boundary` for an engineering rule. A source reference does not validate a matching expression, response priority, refusal policy or clinical judgment. Related supporting sources and detailed rubrics remain documented above and in the knowledge notes.
+
+The check rejects missing or unresolved references, missing or duplicate IDs within a set, malformed JSON, empty sets and an empty evaluation directory. IDs may repeat across sets; file name plus ID identifies a case. Files outside this naming convention and inline sequence tests are not covered by this discovery check. Six integrity tests exercise discovery and failure handling separately from response quality tests. Provenance validity is not a response score or proof that a source supports every assertion.

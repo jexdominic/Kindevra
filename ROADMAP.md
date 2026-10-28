@@ -105,3 +105,11 @@ See evaluation/2026-10-26-grief.md. Version 0.2.0 is unchanged.
 - [ ] Broader reported speech, complex negation and independent intent evaluation remain open.
 
 See evaluation/2026-10-27-exercise-consent.md. Version remains 0.2.0.
+
+## Evaluation provenance coverage
+- [x] Label all 103 separate fixtures with a source or product-boundary basis.
+- [x] Discover all seven scenario sets and reject missing references, malformed sets and duplicate IDs.
+- [x] Verify six additional integrity tests; 138 total tests and 13 original scenarios pass.
+- [ ] Independent source-to-assertion review and clinical scoring remain outstanding.
+
+See evaluation/2026-10-28-provenance-coverage.md. Version remains 0.2.0.

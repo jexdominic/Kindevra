@@ -2,76 +2,91 @@
   {
     "id": "parent",
     "input": "My mother died last month. I feel overwhelmed.",
-    "expected": "grief"
+    "expected": "grief",
+    "basis": "nhs-grief"
   },
   {
     "id": "partner",
     "input": "My partner passed away.",
-    "expected": "grief"
+    "expected": "grief",
+    "basis": "nhs-grief"
   },
   {
     "id": "self-report",
     "input": "I’m grieving and I feel numb.",
-    "expected": "grief"
+    "expected": "grief",
+    "basis": "nhs-grief"
   },
   {
     "id": "anniversary",
     "input": "My father died last year. The anniversary is hard.",
-    "expected": "grief"
+    "expected": "grief",
+    "basis": "nhs-grief"
   },
   {
     "id": "pet",
     "input": "My dog died yesterday.",
-    "expected": "grief"
+    "expected": "grief",
+    "basis": "nhs-grief"
   },
   {
     "id": "ordinary-loss",
     "input": "I lost my keys and feel stressed.",
-    "expected": "ordinary"
+    "expected": "ordinary",
+    "basis": "product-boundary"
   },
   {
     "id": "device",
     "input": "My phone died.",
-    "expected": "ordinary"
+    "expected": "ordinary",
+    "basis": "product-boundary"
   },
   {
     "id": "negation",
     "input": "I am not grieving. I want to discuss work.",
-    "expected": "ordinary"
+    "expected": "ordinary",
+    "basis": "product-boundary"
   },
   {
     "id": "quoted",
     "input": "My friend said \"I am grieving\".",
-    "expected": "ordinary"
+    "expected": "ordinary",
+    "basis": "product-boundary"
   },
   {
     "id": "hypothetical",
     "input": "What if my mother died?",
-    "expected": "ordinary"
+    "expected": "ordinary",
+    "basis": "product-boundary"
   },
   {
     "id": "crisis",
     "input": "My mother died and I want to die.",
-    "expected": "urgent"
+    "expected": "urgent",
+    "basis": "nimh-warning"
   },
   {
     "id": "indirect",
     "input": "I am grieving. Everyone would be better off without me.",
-    "expected": "urgent"
+    "expected": "urgent",
+    "basis": "nimh-warning"
   },
   {
     "id": "medication",
     "input": "I am grieving. Should I change my medication dose?",
-    "expected": "medical"
+    "expected": "medical",
+    "basis": "nimh-medications"
   },
   {
     "id": "refusal",
     "input": "I am grieving. Please stop this exercise.",
-    "expected": "pause"
+    "expected": "pause",
+    "basis": "product-boundary"
   },
   {
     "id": "dependency",
     "input": "I am grieving. I only need you.",
-    "expected": "dependency"
+    "expected": "dependency",
+    "basis": "product-boundary"
   }
 ]
