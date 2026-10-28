@@ -30,6 +30,13 @@ All 103 Node tests pass, including five additional integration cases for draft e
 A new internal conversation controller sequences listening, response generation, playback and the next listening turn. Stop and interruption abort the active operation and invalidate late completions. Consent is checked between stages; truncated transcripts become drafts for review, and urgent responses end the loop before playback or further capture.
 
 All 112 Node tests pass, including nine orchestration tests for turn order, stopping in each phase, interruption, consent, transcript review, urgent routing through the existing response engine, and audio failure. The controller is not yet connected to browser audio or exposed in the interface. Its capture and playback adapters must release resources on abort. Browser adapters, explicit continuous-mode controls and real microphone/playback validation remain necessary before release.
+## Browser audio adapters
+
+Promise-based browser speech adapters now provide capture and playback for the continuous-turn controller. Abort signals reject pending operations and stop audio; completion detaches handlers and clears timers. Capture has a 30-second timeout and playback a 120-second timeout. Recognition errors retain their browser error code, unavailable services fail without capture, and transcript truncation is preserved for review.
+
+All 123 Node tests pass, including 11 adapter tests and a simulated complete conversation turn. The continuous path remains internal and is not exposed in the interface. Live device behavior, browser compatibility and the proposed timeout durations still need validation. Existing manual dictation behavior is unchanged.
+
+API references: https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognition/abort and https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis/cancel
 ## Next increments
 
 Remaining work includes real microphone testing across supported browsers, integration coverage for clear/navigation/urgent cancellation, state-driven controls, local-only speech support, and continuous turns with deliberate interruption behavior. Transcript review remains the default while these behaviors are evaluated.
