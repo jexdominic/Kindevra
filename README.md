@@ -46,4 +46,7 @@ Original Kindevra code and documentation are licensed under the [MIT License](LI
 
 Requests to stop an exercise pause automatic exercise suggestions for the current visit. Say “resume exercises” to enable them again; the selected support preference still applies. Library practices remain available by choice. Clear conversation or refresh resets this preference.
 
+## Voice prototype (unmerged feature)
+Optional browser speech input and spoken replies are available behind visit-only consent. Review transcripts before sending. Browser providers may process voice data externally. See [voice development notes](VOICE_DEVELOPMENT.md) for validation and limitations.
+
 See [change history](CHANGELOG.md) and [versioning policy](VERSIONING.md).
