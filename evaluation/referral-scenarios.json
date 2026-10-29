@@ -1,0 +1,68 @@
+[
+  {
+    "id": "anxiety",
+    "input": "I am anxious. How can I find a therapist?",
+    "expected": "referral",
+    "basis": "nimh-therapy"
+  },
+  {
+    "id": "worry",
+    "input": "I worry constantly. Help me find a counsellor.",
+    "expected": "referral",
+    "basis": "nimh-therapy"
+  },
+  {
+    "id": "choose",
+    "input": "How do I choose a psychologist?",
+    "expected": "referral",
+    "basis": "nimh-therapy"
+  },
+  {
+    "id": "want",
+    "input": "I want to find a therapist.",
+    "expected": "referral",
+    "basis": "nimh-therapy"
+  },
+  {
+    "id": "polite",
+    "input": "Please help me find a counselor.",
+    "expected": "referral",
+    "basis": "nimh-therapy"
+  },
+  {
+    "id": "negation",
+    "input": "I do not want to find a therapist.",
+    "expected": "ordinary",
+    "basis": "product-boundary"
+  },
+  {
+    "id": "quote",
+    "input": "My friend said \"help me find a therapist\".",
+    "expected": "ordinary",
+    "basis": "product-boundary"
+  },
+  {
+    "id": "third-person",
+    "input": "My friend wants to find a therapist.",
+    "expected": "ordinary",
+    "basis": "product-boundary"
+  },
+  {
+    "id": "crisis",
+    "input": "How can I find a therapist? I want to die.",
+    "expected": "urgent",
+    "basis": "nimh-warning"
+  },
+  {
+    "id": "medication",
+    "input": "Help me find a therapist. Should I change my dose?",
+    "expected": "medical",
+    "basis": "nimh-medications"
+  },
+  {
+    "id": "refusal",
+    "input": "Stop the exercise. Help me find a therapist.",
+    "expected": "pause",
+    "basis": "product-boundary"
+  }
+]

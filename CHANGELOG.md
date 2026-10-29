@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Explicit requests to find or choose a mental health professional now receive source-linked referral guidance before generic stress exercises. Eleven added regressions cover both support modes and exercise-pause states.
+
 - Extended provenance checks to all seven separate evaluation sets (103 fixtures), with explicit source or product-boundary labels and failures for malformed sets, unresolved references and duplicate case IDs.
 
 - Reduced false exercise pauses caused by selected negated requests, quotations and unrelated mentions. Genuine refusals still persist alongside medical and urgent concerns; complex intent remains limited.

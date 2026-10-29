@@ -113,3 +113,11 @@ See evaluation/2026-10-27-exercise-consent.md. Version remains 0.2.0.
 - [ ] Independent source-to-assertion review and clinical scoring remain outstanding.
 
 See evaluation/2026-10-28-provenance-coverage.md. Version remains 0.2.0.
+
+## Professional-referral requests
+- [x] Respond to selected care-finding requests with source-linked questions about choosing a professional.
+- [x] Preserve higher-priority boundaries and exercise-pause state across 44 response checks.
+- [x] Verify 149 tests, 13 original scenarios and 114 source references across eight sets.
+- [ ] Broader language coverage, access-barrier evaluation and independent clinical review remain open.
+
+See evaluation/2026-10-29-referral.md. Version remains 0.2.0.

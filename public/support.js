@@ -38,6 +38,11 @@ function mentionsPersonalGrief(text) {
     || /(?:^|[.!?]\s*)my\s+(?:mother|father|mom|mum|dad|parent|partner|wife|husband|sister|brother|child|son|daughter|grandmother|grandfather|friend|dog|cat|pet)\s+(?:died|passed away)\b/i.test(text.trim());
 }
 
+function asksForProfessionalSupport(text) {
+  if (/["“”]/.test(text)) return false;
+  return text.split(/[.!?\n]+/).some(part => /^(?:please\s+)?(?:help me|how (?:can|do) i|i want to)\s+(?:find|choose)\s+(?:a|an)\s+(?:therapist|psychologist|counsellor|counselor|mental health professional)\b/i.test(part.trim()));
+}
+
 function declinesExercise(text) {
   const unquoted = text.replace(/["“][^"”]*["”]/g, ' ').replace(/["“”].*$/g, ' ');
   const practice = '(?:(?:this|the|that)\\s+)?(?:(?:grounding|breathing|thought)\\s+)?exercises?|grounding|breathing';
@@ -107,6 +112,11 @@ export function replyTo(text, turn = 0, session = null) {
     text: 'I’m sorry you’re facing this loss. Grief can feel different for different people; you do not have to feel a particular way. If you want, you can tell me what feels hardest right now. If coping is difficult, support from someone you trust, a bereavement counsellor or a qualified health professional may help. You can choose how much to share.',
     source: 'https://www.nhs.uk/mental-health/feelings-symptoms-behaviours/feelings-and-symptoms/grief-bereavement-loss/',
     label: 'NHS · Grief after bereavement or loss',
+  };
+  if (asksForProfessionalSupport(text)) return {
+    text: 'Finding someone you feel comfortable talking with can take time. You could ask a health care provider about options or consult a professional directory. Before choosing, ask about credentials, experience with your concerns, the approach to care, fees and confidentiality. Kindevra cannot verify a provider’s credentials or availability. What feels hardest about finding support?',
+    source: exercises.support.source,
+    label: exercises.support.label,
   };
   if (session && /^(?:please )?resume exercises[.!]?$/i.test(text.trim())) {
     session.exercisesPaused = false;

@@ -47,11 +47,12 @@
     "title": "Psychotherapies",
     "url": "https://www.nimh.nih.gov/health/topics/psychotherapies",
     "publisher": "NIMH",
-    "checked": "2026-10-20",
-    "summary": "Professional psychotherapy involves individualized care. Persistent difficulties should not be diagnosed by this prototype.",
+    "checked": "2026-10-29",
+    "summary": "Psychotherapy involves individualized professional care. NIMH describes finding providers and discussing credentials, experience, treatment approach, fees and confidentiality. These considerations inform referral guidance; they do not validate this prototype or its routing rules.",
     "tags": [
       "referral",
-      "professional-support"
+      "professional-support",
+      "finding-care"
     ],
     "rights": "Linked reference; full-text reuse and training permissions not verified.",
     "clinicalReview": "pending",
