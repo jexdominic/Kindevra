@@ -2,7 +2,9 @@ import { setupVoice } from './voice-ui.js';
 import { createSession, checkIn, suggestMood } from './session.js';
 import { replyTo, urgentSupport, exercises } from './support.js';
 const messages = document.querySelector('#messages');
-const voice = setupVoice();
+const voice = setupVoice({ respond: respondToMessage,
+  onMessage: message => addMessage(message.text, message.role === 'user' ? 'user' : 'kindevra', message.source, message.label)
+});
 let turn = 0;
 let session = createSession();
 let pendingMood = null;
@@ -34,18 +36,22 @@ function reset() {
   document.querySelector('#mood-note').textContent = 'Just for this visit. There’s no right answer.';
   addMessage('Welcome. This is a guided prototype, so my replies are scripted and may not fit every situation. You can share a little about your day, or choose a practice below.');
 }
+function respondToMessage(text) {
+  const response = replyTo(text, turn++, session);
+  pendingMood = response.urgent ? null : suggestMood(text);
+  document.querySelector('#mood-suggestion').hidden = !pendingMood;
+  if (pendingMood) document.querySelector('#suggestion-text').textContent = `Would “${pendingMood.toLowerCase()}” fit as a check-in? I may have misunderstood. You can also select a different mood above.`;
+  if (response.urgent) document.querySelector('#support-dialog').showModal();
+  return response;
+}
 function send(text) {
   text = text.trim().slice(0, 2000);
   if (!text) return;
   voice.stop();
   addMessage(text, 'user');
-  const response = replyTo(text, turn++, session);
+  const response = respondToMessage(text);
   addMessage(response.text, 'kindevra', response.source, response.label);
   if (!response.urgent) voice.speak(response.text);
-  pendingMood = response.urgent ? null : suggestMood(text);
-  document.querySelector('#mood-suggestion').hidden = !pendingMood;
-  if (pendingMood) document.querySelector('#suggestion-text').textContent = `Would “${pendingMood.toLowerCase()}” fit as a check-in? I may have misunderstood. You can also select a different mood above.`;
-  if (response.urgent) document.querySelector('#support-dialog').showModal();
 }
 document.querySelector('#chat-form').addEventListener('submit', e => {
   e.preventDefault(); const input = document.querySelector('#message'); send(input.value); input.value = ''; input.focus();

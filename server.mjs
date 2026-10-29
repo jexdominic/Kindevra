@@ -2,6 +2,8 @@ import { createServer } from 'node:http';
 import { readFile } from 'node:fs/promises';
 const files = {
   '/': ['index.html', 'text/html'],
+  '/voice-conversation.js': ['voice-conversation.js', 'text/javascript'],
+  '/voice-browser-audio.js': ['voice-browser-audio.js', 'text/javascript'],
   '/voice.js': ['voice.js', 'text/javascript'],
   '/voice-ui.js': ['voice-ui.js', 'text/javascript'],
   '/app.js': ['app.js', 'text/javascript'],

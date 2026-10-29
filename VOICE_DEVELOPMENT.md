@@ -37,6 +37,11 @@ Promise-based browser speech adapters now provide capture and playback for the c
 All 123 Node tests pass, including 11 adapter tests and a simulated complete conversation turn. The continuous path remains internal and is not exposed in the interface. Live device behavior, browser compatibility and the proposed timeout durations still need validation. Existing manual dictation behavior is unchanged.
 
 API references: https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognition/abort and https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis/cancel
+## Continuous conversation interface
+
+Continuous mode is now connected to the browser audio adapters and the same session, turn counter, response selection and mood suggestions used by text messaging. A separate automatic-send checkbox explains the behavior before Start conversation can capture audio. The interface offers listening/thinking/speaking status, interruption during playback and Stop voice. Existing drafts prevent starting a continuous session. Typing, consent withdrawal, page hiding, navigation, clearing and urgent-support access stop voice through the shared stop entry point.
+
+All 130 Node tests and 13 response scenarios pass. Seven new UI integration tests exercise continuous consent, draft protection, transcript/reply flow, interruption, urgent responses and stop triggers using simulated browser services. A local browser check verified module loading, consent gating and ordinary text replies after integration. Real microphone input, audible playback, device permission recovery and live interruption across supported browsers remain unverified. Continuous mode is experimental and not ready for release.
 ## Next increments
 
 Remaining work includes real microphone testing across supported browsers, integration coverage for clear/navigation/urgent cancellation, state-driven controls, local-only speech support, and continuous turns with deliberate interruption behavior. Transcript review remains the default while these behaviors are evaluated.

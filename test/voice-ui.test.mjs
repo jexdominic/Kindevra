@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { setupVoice } from '../public/voice-ui.js';
 
-function fixture({ supported = true, prefixed = false } = {}) {
+function fixture({ supported = true, prefixed = false, respond } = {}) {
   const elements = new Map();
   function target() {
     const listeners = new Map();
@@ -27,11 +27,12 @@ function fixture({ supported = true, prefixed = false } = {}) {
     SpeechSynthesisUtterance: class { constructor(text) { this.text = text; } }
   });
   if (supported) window[prefixed ? 'webkitSpeechRecognition' : 'SpeechRecognition'] = Recognition;
-  const voice = setupVoice({ document, window });
+  const messages = [];
+  const voice = setupVoice({ document, window, respond, onMessage: message => messages.push(message) });
   const element = selector => document.querySelector(selector);
   const start = () => { element('#voice-consent').checked = true; element('#voice-start').fire('click'); };
   const result = text => ({ results: [Object.assign([{ transcript: text }], { isFinal: true })] });
-  return { voice, document, window, element, start, instances, spoken, result, cancellations: () => cancellations };
+  return { voice, document, window, messages, element, start, instances, spoken, result, cancellations: () => cancellations };
 }
 
 test('unsupported input notice survives reset, stop and playback completion', () => {
@@ -132,3 +133,67 @@ test('a short transcript that exceeds remaining space warns before recognition e
   f.instances[0].onend();
   assert.match(f.element('#voice-status').textContent, /Some speech was not added/);
 });
+
+const flushVoice = () => new Promise(resolve => setImmediate(resolve));
+function startConversation(f) {
+  f.element('#voice-consent').checked = true;
+  f.element('#voice-automatic').checked = true;
+  f.element('#voice-conversation-start').fire('click');
+}
+
+test('continuous UI requires automatic-send consent and preserves existing drafts', () => {
+  const f = fixture({ respond: () => ({ text: 'reply' }) });
+  f.element('#voice-consent').checked = true;
+  f.element('#voice-conversation-start').fire('click');
+  assert.equal(f.instances.length, 0);
+  assert.match(f.element('#voice-status').textContent, /automatic sending/);
+  f.element('#message').value = 'Unsent draft';
+  startConversation(f);
+  assert.equal(f.instances.length, 0);
+  assert.equal(f.element('#message').value, 'Unsent draft');
+});
+
+test('continuous UI sends transcripts, plays replies, interrupts and stops', async () => {
+  const received = [];
+  const f = fixture({ respond: text => { received.push(text); return { text: 'reply' }; } });
+  startConversation(f);
+  assert.equal(f.element('#voice-conversation-start').disabled, true);
+  f.instances[0].onresult(f.result('spoken message')); f.instances[0].onend();
+  await flushVoice();
+  assert.deepEqual(received, ['spoken message']);
+  assert.equal(f.spoken[0].text, 'reply');
+  assert.equal(f.element('#voice-interrupt').disabled, false);
+  f.element('#voice-interrupt').fire('click');
+  await flushVoice();
+  assert.equal(f.instances.length, 2);
+  assert.equal(f.spoken[0].onend, null);
+  f.element('#voice-stop').fire('click'); await flushVoice();
+  assert.equal(f.instances[1].aborted, true);
+  assert.equal(f.element('#voice-conversation-start').disabled, false);
+  assert.deepEqual(f.messages.map(m => m.text), ['spoken message', 'reply']);
+});
+
+test('continuous urgent response stops before playback and further capture', async () => {
+  const f = fixture({ respond: () => ({ text: 'Urgent support', urgent: true }) });
+  startConversation(f);
+  f.instances[0].onresult(f.result('need help')); f.instances[0].onend();
+  await flushVoice();
+  assert.equal(f.spoken.length, 0);
+  assert.equal(f.instances.length, 1);
+  assert.match(f.element('#voice-status').textContent, /urgent support/);
+});
+
+for (const action of ['typing', 'withdraw', 'hide', 'external-stop']) {
+  test(`continuous capture ends on ${action}`, async () => {
+    const f = fixture({ respond: () => ({ text: 'reply' }) });
+    startConversation(f);
+    if (action === 'typing') f.element('#message').fire('input');
+    if (action === 'withdraw') { f.element('#voice-consent').checked = false; f.element('#voice-consent').fire('change'); }
+    if (action === 'hide') { f.document.hidden = true; f.document.fire('visibilitychange'); }
+    if (action === 'external-stop') f.voice.stop();
+    await flushVoice();
+    assert.equal(f.instances[0].aborted, true);
+    assert.equal(f.instances[0].onresult, null);
+    assert.deepEqual(f.messages, []);
+  });
+}

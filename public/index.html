@@ -34,10 +34,13 @@
       <div class="suggestions"><button data-prompt="I feel overwhelmed">I feel overwhelmed</button><button data-prompt="I am stuck in my thoughts">I’m overthinking</button><button data-prompt="I just need to talk">I just need to talk</button></div>
       <section class="voice-controls" aria-labelledby="voice-title">
         <h2 id="voice-title">Talk in your space</h2>
-        <p id="voice-disclosure">Optional browser voice services may send audio and reply text to their providers. Their processing and retention policies apply. Kindevra does not save audio. Review your transcript before sending. Replies are still scripted.</p>
+        <p id="voice-disclosure">Optional browser voice services may send audio and reply text to their providers. Their processing and retention policies apply. Kindevra does not save audio. Speak a message to review it before sending, or opt into automatic sending for a continuous conversation. Replies are still scripted.</p>
         <label><input type="checkbox" id="voice-consent" aria-describedby="voice-disclosure"> I allow browser voice processing for this visit</label>
         <label><input type="checkbox" id="voice-read"> Read replies aloud</label>
         <div><button type="button" id="voice-start">Speak a message</button> <button type="button" id="voice-stop">Stop voice</button></div>
+        <label><input type="checkbox" id="voice-automatic"> Send spoken messages automatically and read replies aloud during a conversation</label>
+        <p>Conversation mode listens again after each reply. Use Interrupt to speak next, or Stop voice to end. Speech recognition may mishear your words.</p>
+        <div><button type="button" id="voice-conversation-start">Start conversation</button> <button type="button" id="voice-interrupt" disabled>Interrupt reply</button></div>
         <p id="voice-status" role="status">Ready</p>
       </section>
       <form id="chat-form"><label class="sr-only" for="message">Your message</label><textarea id="message" rows="2" maxlength="2000" placeholder="What’s on your mind?" required></textarea><button class="send" type="submit" aria-label="Send message">↑</button></form>
