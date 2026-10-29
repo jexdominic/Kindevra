@@ -40,6 +40,14 @@ Run `node evaluation/run.mjs` for the broader scenario suite. Version 0.2.0 pass
 ## Adaptive support prototype
 See [requirements and research](REQUIREMENTS.md). Optional check-ins now influence small-step replies; listen-first is the default. Simple first-person phrases can suggest a check-in, which must be accepted before it changes context. Check-in changes prompt clarification rather than a clinical interpretation. Forgetting active check-in context leaves earlier visible messages until Clear conversation is used.
 
+## Internal profile prototype (unmerged feature)
+
+Explicit practice feedback now builds a private, visit-only preference profile
+in the background. It helps select later small-step suggestions and avoid
+declined practices. No profile is displayed or uploaded; Clear conversation and
+refresh erase it. Saying “forget practice preferences” resets only learned practice choices while keeping the conversation and check-in. Listening mode, exercise pauses and safety routing still take
+priority. See [development scope and next steps](PROFILE_DEVELOPMENT.md).
+
 ## License
 
 Original Kindevra code and documentation are licensed under the [MIT License](LICENSE). See [third-party notices](THIRD_PARTY_NOTICES.md) for external psychology resources and their separate terms. The license does not establish clinical validation.

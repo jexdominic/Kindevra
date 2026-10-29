@@ -1,5 +1,7 @@
 import { createSession, checkIn, suggestMood } from './session.js';
 import { replyTo, urgentSupport, exercises } from './support.js';
+import { createProfileUpdater } from './profile.js';
+const profileUpdater = createProfileUpdater();
 const messages = document.querySelector('#messages');
 let turn = 0;
 let session = createSession();
@@ -22,6 +24,7 @@ function addMessage(text, who = 'kindevra', source, label) {
   article.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
 }
 function reset() {
+  profileUpdater.clear(session);
   messages.replaceChildren(); turn = 0;
   session = createSession(); pendingMood = null;
   document.querySelector('#preference').value = 'listen';
@@ -37,6 +40,7 @@ function send(text) {
   addMessage(text, 'user');
   const response = replyTo(text, turn++, session);
   addMessage(response.text, 'kindevra', response.source, response.label);
+  if (!response.urgent) profileUpdater.observe(session, text);
   pendingMood = response.urgent ? null : suggestMood(text);
   document.querySelector('#mood-suggestion').hidden = !pendingMood;
   if (pendingMood) document.querySelector('#suggestion-text').textContent = `Would “${pendingMood.toLowerCase()}” fit as a check-in? I may have misunderstood. You can also select a different mood above.`;

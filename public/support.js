@@ -1,4 +1,5 @@
 import { adaptiveReply } from './session.js';
+import { preferenceSignal, preferredPractice, practiceDeclined, clearProfile } from './profile.js';
 import { needsBeliefSupport, beliefSupport } from './belief-support.js';
 export const urgentSupport = 'If you might act on thoughts of harming yourself or someone else, or you have already taken something harmful, contact local emergency services or go to the nearest emergency department now. If possible, ask a trusted person to stay with you and move away from anything you could use to hurt yourself. Kindevra cannot monitor your safety or contact help for you.';
 export const exercises = {
@@ -108,6 +109,13 @@ export function replyTo(text, turn = 0, session = null) {
   // Offer uncertainty and human support before generic thought exercises.
   // Earlier crisis, refusal, medical and dependency boundaries still apply.
   if (needsBeliefSupport(text)) return { ...beliefSupport };
+  if (session && /^(?:please )?forget (?:my )?practice preferences[.!]?$/i.test(text.trim())) {
+    clearProfile(session);
+    return { text: 'Practice preferences forgotten. Earlier messages, your check-in, support mode and any exercise pause remain. New practice feedback can set preferences again.' };
+  }
+  if (session && preferenceSignal(text)) return {
+    text: 'Thanks for telling me what fits. I’ll use that preference for suggestions during this visit. You can say “forget practice preferences” to reset these choices, or clear the conversation. Library practices remain available at any time.',
+  };
   if (mentionsPersonalGrief(text)) return {
     text: 'I’m sorry you’re facing this loss. Grief can feel different for different people; you do not have to feel a particular way. If you want, you can tell me what feels hardest right now. If coping is difficult, support from someone you trust, a bereavement counsellor or a qualified health professional may help. You can choose how much to share.',
     source: 'https://www.nhs.uk/mental-health/feelings-symptoms-behaviours/feelings-and-symptoms/grief-bereavement-loss/',
@@ -130,9 +138,12 @@ export function replyTo(text, turn = 0, session = null) {
       ? 'Thanks for clarifying. What has been difficult at work, and what kind of support would help right now?'
       : 'Thanks for clarifying. What would you like support with right now?' };
   if (session?.preference === 'listen' && !/\b(therap\w*|professional|depress\w*)\b/i.test(text)) return adaptiveReply(session);
-  if (/\b(anxi\w*|panic|stress\w*|overwhelm\w*)\b/i.test(text)) return exercises.grounding;
-  if (/\b(thought\w*|worr\w*|overthink\w*)\b/i.test(text)) return exercises.thoughts;
+  if (/\b(anxi\w*|panic|stress\w*|overwhelm\w*)\b/i.test(text))
+    return session && practiceDeclined(session, 'grounding') ? adaptiveReply(session) : exercises.grounding;
+  if (/\b(thought\w*|worr\w*|overthink\w*)\b/i.test(text))
+    return session && practiceDeclined(session, 'thoughts') ? adaptiveReply(session) : exercises.thoughts;
   if (/\b(therap\w*|professional|depress\w*)\b/i.test(text)) return exercises.support;
+  if (session?.preference === 'steps' && preferredPractice(session)) return exercises[preferredPractice(session)];
   if (session) return adaptiveReply(session);
   const prompts = [
     'Thank you for putting that into words. What feels most important for you to talk about right now?',
