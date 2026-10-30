@@ -1,6 +1,6 @@
 # Versioning
 
-Kindevra reserves version changes for substantial completed user-facing features or major milestones. Small fixes, narrow response-rule changes, documentation edits and higher fixture scores accumulate under Unreleased without changing the version. Version 0.2.0 remains the current baseline.
+Kindevra reserves version changes for substantial completed user-facing features or major milestones. Small fixes, narrow response-rule changes, documentation edits and higher fixture scores accumulate under Unreleased without changing the version. The current version is recorded in package.json; earlier versions remain in the changelog.
 
 A milestone needs a concrete explanation of substantial user impact, relevant end-to-end verification and passing required checks. Commit counts, elapsed time and a collection of minor edits are not sufficient. Unmerged experiments remain outside version decisions.
 

@@ -2,6 +2,18 @@
 
 ## Unreleased
 
+No additional changes recorded.
+
+## 0.3.0 — 2026-10-30
+
+Source baseline: 029ad6388a35c16320c8308494d1f8d25a4b7e28.
+
+Visit-only practice personalization is now merged: explicit feedback influences later small-step suggestions, declined practices are avoided, and another explicitly helpful practice can remain available. Preferences can be forgotten without clearing the conversation or check-in. Reset and refresh discard visit memory; queued updates cannot restore cleared preferences. Listening, exercise pauses and recognized safety concerns retain priority. No cross-visit storage or external transmission was added.
+
+Verification: 166/166 unit tests, 13/13 original scenarios and nine source records with 114 references across eight sets pass. Documented manual browser checks cover preference changes, forgetting, reset, refresh, tab isolation and response precedence. Coverage remains limited to one browser; these checks do not establish clinical competence. Source approvals are pending and zero summaries qualify for retrieval. Voice is not included. No intentional breaking changes were identified.
+
+Additional improvements included in this version:
+
 - Explicit requests to find or choose a mental health professional now receive source-linked referral guidance before generic stress exercises. Eleven added regressions cover both support modes and exercise-pause states.
 
 - Extended provenance checks to all seven separate evaluation sets (103 fixtures), with explicit source or product-boundary labels and failures for malformed sets, unresolved references and duplicate case IDs.
@@ -14,7 +26,7 @@
 
 - Exercise refusals now persist alongside medical questions and recognized crisis language. Medication questions retain the prescriber boundary and link to NIMH medication guidance. Verified by 81 unit tests and 13 original scenarios; wording rules and clinical-review limitations remain.
 
-Versioning now reserves increments for substantial features or major milestones. Minor improvements accumulate here until that threshold is met.
+
 
 ## 0.2.0 — 2026-10-24
 
