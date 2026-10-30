@@ -2,6 +2,16 @@ import { createSession, checkIn, suggestMood } from './session.js';
 import { replyTo, urgentSupport, exercises } from './support.js';
 import { createProfileUpdater } from './profile.js';
 const profileUpdater = createProfileUpdater();
+const themePicker = document.querySelector('#theme');
+const themeColors = { warm: '#f8f6ef', minimal: '#fafafa', cozy: '#242528', chocolate: '#f1e6db', cookie: '#38291f' };
+function applyTheme() {
+  const theme = Object.hasOwn(themeColors, themePicker.value) ? themePicker.value : 'warm';
+  document.documentElement.dataset.theme = theme;
+  themePicker.value = theme;
+  document.querySelector('meta[name="theme-color"]').content = themeColors[theme];
+}
+themePicker.addEventListener('change', applyTheme);
+applyTheme();
 const messages = document.querySelector('#messages');
 let turn = 0;
 let session = createSession();
