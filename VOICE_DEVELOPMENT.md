@@ -52,3 +52,9 @@ All 138 Node tests pass, including eight new tests covering error messages, expl
 Remaining work includes real microphone testing across supported browsers, integration coverage for clear/navigation/urgent cancellation, state-driven controls, local-only speech support, and continuous turns with deliberate interruption behavior. Transcript review remains the default while these behaviors are evaluated.
 
 Reference: https://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_API/Using_the_Web_Speech_API
+
+## Listening follow-up replies
+
+Listening mode previously returned the same opening sentence for every message. It now uses the shared conversation turn to vary follow-up questions and recognizes a narrow direct busy-day report without inferring mood. Voice and text use the same routing; urgent and medical boundaries retain priority.
+
+All 141 Node tests pass. A browser check reproduced the sequence "I just need to talk" followed by "my day was busy" and verified a distinct busy-day question. User-reported live speech produced visible transcripts, but revealed repetitive scripted replies. Audible playback, browser identity and the remaining device checks are not established by those screenshots. This bounded fix does not add open-ended language understanding; generic questions cycle after four turns.

@@ -36,3 +36,28 @@ test('new session drops old context', () => {
   const old = createSession(); checkIn(old, 'Low'); old.preference = 'steps';
   assert.deepEqual(createSession(), { mood: null, previousMood: null, preference: 'listen', exercisesPaused: false });
 });
+
+
+test('spoken opening and busy-day follow-up get distinct relevant replies', () => {
+  const session = createSession();
+  const opening = replyTo('I just need to talk', 0, session);
+  const next = replyTo('my day was busy', 1, session);
+  assert.notEqual(next.text, opening.text);
+  assert.match(next.text, /busiest part of your day/);
+  assert.equal(session.mood, null);
+});
+
+test('consecutive listening turns vary while safety routing retains priority', () => {
+  const session = createSession();
+  const replies = ['I just need to talk', 'Lots of meetings', 'I want to say more', 'I am not sure']
+    .map((message, turn) => replyTo(message, turn, session).text);
+  assert.equal(new Set(replies).size, replies.length);
+  assert.equal(replyTo('my day was busy and I want to die', 4, session).urgent, true);
+  assert.match(replyTo('my day was busy and I need medication', 5, session).text, /prescriber/);
+});
+
+test('busy-day replies abstain on negation and third-person wording', () => {
+  for (const text of ['my day was not busy', 'her day was busy', 'my day was busy yesterday but not today']) {
+    assert.doesNotMatch(replyTo(text, 1, createSession()).text, /busiest part|busy day/);
+  }
+});
