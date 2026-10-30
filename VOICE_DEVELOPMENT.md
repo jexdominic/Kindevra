@@ -42,6 +42,11 @@ API references: https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecogniti
 Continuous mode is now connected to the browser audio adapters and the same session, turn counter, response selection and mood suggestions used by text messaging. A separate automatic-send checkbox explains the behavior before Start conversation can capture audio. The interface offers listening/thinking/speaking status, interruption during playback and Stop voice. Existing drafts prevent starting a continuous session. Typing, consent withdrawal, page hiding, navigation, clearing and urgent-support access stop voice through the shared stop entry point.
 
 All 130 Node tests and 13 response scenarios pass. Seven new UI integration tests exercise continuous consent, draft protection, transcript/reply flow, interruption, urgent responses and stop triggers using simulated browser services. A local browser check verified module loading, consent gating and ordinary text replies after integration. Real microphone input, audible playback, device permission recovery and live interruption across supported browsers remain unverified. Continuous mode is experimental and not ready for release.
+## Voice error recovery
+
+Continuous mode now distinguishes denied microphone access, blocked speech services, unavailable microphones, network failures, no speech, capture timeouts and playback failures. Recovery messages point to the relevant action; the session ends without automatic retries, preserves visible replies and makes Start conversation available again.
+
+All 138 Node tests pass, including eight new tests covering error messages, explicit permission retry, playback failure and timeout states. These remain simulated checks. [Live validation](VOICE_VALIDATION.md) lists the outstanding device and browser checks without recording unperformed tests as successes.
 ## Next increments
 
 Remaining work includes real microphone testing across supported browsers, integration coverage for clear/navigation/urgent cancellation, state-driven controls, local-only speech support, and continuous turns with deliberate interruption behavior. Transcript review remains the default while these behaviors are evaluated.

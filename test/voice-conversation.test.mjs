@@ -112,3 +112,19 @@ test('audio failure ends the session without automatic retries', async () => {
   assert.equal(f.captures.length, 1);
   assert.equal(f.captures[0].signal.aborted, true);
 });
+
+for (const phase of ['capture', 'playback']) {
+  test(`${phase} timeout produces its own recovery state`, async () => {
+    const f = fixture(); const run = f.conversation.start();
+    if (phase === 'playback') {
+      f.captures[0].resolve({ text: 'hello' }); await flush();
+      f.replies[0].resolve({ text: 'reply' }); await flush();
+    }
+    const operation = phase === 'capture' ? f.captures[0] : f.playbacks[0];
+    operation.reject(Object.assign(new Error('timeout'), { code: 'timeout' }));
+    await run;
+    assert.equal(f.states.at(-1), `${phase}-timeout`);
+    assert.equal(f.conversation.active, false);
+    assert.equal(operation.signal.aborted, true);
+  });
+}

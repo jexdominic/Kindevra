@@ -197,3 +197,43 @@ for (const action of ['typing', 'withdraw', 'hide', 'external-stop']) {
     assert.deepEqual(f.messages, []);
   });
 }
+
+for (const [code, expected] of [
+  ['not-allowed', /permission was denied/],
+  ['audio-capture', /No usable microphone/],
+  ['network', /could not connect/],
+  ['no-speech', /No speech detected/]
+]) {
+  test(`continuous UI explains ${code} without retrying automatically`, async () => {
+    const f = fixture({ respond: () => ({ text: 'reply' }) });
+    startConversation(f);
+    f.instances[0].onerror({ error: code });
+    await flushVoice();
+    assert.match(f.element('#voice-status').textContent, expected);
+    assert.equal(f.instances.length, 1);
+    assert.equal(f.instances[0].aborted, true);
+    assert.equal(f.element('#voice-conversation-start').disabled, false);
+    assert.equal(f.element('#voice-interrupt').disabled, true);
+  });
+}
+
+test('permission failure can recover only through a new explicit start', async () => {
+  const f = fixture({ respond: () => ({ text: 'recovered reply' }) });
+  startConversation(f);
+  f.instances[0].onerror({ error: 'not-allowed' }); await flushVoice();
+  f.element('#voice-conversation-start').fire('click');
+  f.instances[1].onresult(f.result('retry')); f.instances[1].onend(); await flushVoice();
+  assert.equal(f.spoken[0].text, 'recovered reply');
+  f.voice.stop(); await flushVoice();
+});
+
+test('playback failure retains the visible reply and stops further listening', async () => {
+  const f = fixture({ respond: () => ({ text: 'visible reply' }) });
+  startConversation(f);
+  f.instances[0].onresult(f.result('hello')); f.instances[0].onend(); await flushVoice();
+  f.spoken[0].onerror({ error: 'audio-hardware' }); await flushVoice();
+  assert.match(f.element('#voice-status').textContent, /reply could not play/);
+  assert.deepEqual(f.messages.map(m => m.text), ['hello', 'visible reply']);
+  assert.equal(f.instances.length, 1);
+  assert.equal(f.element('#voice-conversation-start').disabled, false);
+});

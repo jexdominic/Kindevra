@@ -26,8 +26,10 @@ export function createVoiceConversation({ capture, respond, playback, hasConsent
       if (!hasConsent()) { stop('consent-required'); return false; }
       return true;
     };
+    let phase = 'capture';
     try {
       while (allowed()) {
+        phase = 'capture';
         onState('listening');
         const result = await capture({ signal });
         if (!allowed()) return;
@@ -40,6 +42,7 @@ export function createVoiceConversation({ capture, respond, playback, hasConsent
         }
         onMessage({ role: 'user', text });
         if (!allowed()) return;
+        phase = 'response';
         onState('thinking');
         const response = await respond(text, { signal });
         if (!allowed()) return;
@@ -49,12 +52,27 @@ export function createVoiceConversation({ capture, respond, playback, hasConsent
         onMessage({ role: 'assistant', ...response });
         if (!allowed()) return;
         if (response.urgent) { stop('urgent'); return; }
+        phase = 'playback';
         onState('speaking');
         await playback(response.text, { signal });
         if (!allowed()) return;
       }
-    } catch {
-      if (current()) stop('error');
+    } catch (failure) {
+      if (current()) {
+        const code = failure?.code;
+        let state = 'error';
+        if (code === 'consent-required') state = 'consent-required';
+        else if (phase === 'capture') {
+          const captureErrors = {
+            'not-allowed': 'microphone-denied', 'service-not-allowed': 'speech-service-denied',
+            'audio-capture': 'microphone-unavailable', network: 'voice-network-error',
+            'no-speech': 'no-speech', timeout: 'capture-timeout',
+            'recognition-unavailable': 'recognition-unavailable'
+          };
+          if (Object.hasOwn(captureErrors, code)) state = captureErrors[code];
+        } else if (phase === 'playback') state = code === 'timeout' ? 'playback-timeout' : 'playback-error';
+        stop(state);
+      }
     }
   }
 

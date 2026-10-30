@@ -22,7 +22,15 @@ export function setupVoice({ document = globalThis.document, window = globalThis
     'consent-required': 'Allow voice processing and automatic sending before starting a conversation.',
     'no-speech': 'No speech detected. Start again when you are ready.',
     'review-required': limitNotice, urgent: 'Voice stopped. Please read the urgent support information.',
-    error: 'Voice conversation stopped. Check microphone permission or try text messaging.'
+    'microphone-denied': 'Microphone permission was denied. Allow microphone access in your browser settings, then start again, or keep typing.',
+    'speech-service-denied': 'The browser speech service is blocked. Check browser settings or use text messaging.',
+    'microphone-unavailable': 'No usable microphone was found. Check your microphone connection and device settings, then start again.',
+    'voice-network-error': 'The speech service could not connect. Check your connection, then start again, or keep typing.',
+    'capture-timeout': 'Voice input timed out. Check microphone access and start again when ready.',
+    'recognition-unavailable': unavailable,
+    'playback-timeout': 'Reply audio timed out. Read the reply in the conversation. Start again when ready.',
+    'playback-error': 'The reply could not play. Read it in the conversation and check your audio settings before starting again.',
+    error: 'Voice conversation stopped. Try starting again or use text messaging.'
   };
   const conversation = createVoiceConversation({ ...audio, respond,
     hasConsent: () => consent.checked && automatic.checked && !document.hidden,
