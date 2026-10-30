@@ -22,6 +22,12 @@ export const exercises = {
     label: 'NIMH · Psychotherapies',
   },
 };
+const professionalReferral = {
+  text: 'Finding someone you feel comfortable talking with can take time. You could ask a health care provider about options or consult a professional directory. Before choosing, ask about credentials, experience with your concerns, the approach to care, fees and confidentiality. Kindevra cannot verify a provider’s credentials or availability. What feels hardest about finding support?',
+  source: exercises.support.source,
+  label: exercises.support.label,
+};
+
 // Narrow self-report/request routing; never infer or store an identity.
 // Guidance and limitations: knowledge/identity-support.md.
 function needsIdentitySupport(text) {
@@ -92,6 +98,12 @@ export function replyTo(text, turn = 0, session = null) {
       label: medicationQuestion ? 'NIMH · Mental Health Medications' : exercises.support.label,
     };
   if (stopExercise) {
+    if (asksForProfessionalSupport(text)) return {
+      ...professionalReferral,
+      text: 'We can stop the exercise. You do not have to continue or explain why. '
+        + (session ? 'Automatic exercises are paused for this visit. ' : '')
+        + professionalReferral.text,
+    };
     return { text: 'We can stop the exercise. You do not have to continue or explain why. Would you prefer to talk about what you need, reach out to someone you trust, or take a break?' + (session ? ' Automatic exercises are paused for this visit. Say “resume exercises” if you want suggestions again. You can still choose a library practice yourself.' : '') };
   }
   if (/\b(?:you are the only (?:friend|support) i need|i only need you|replace my (?:therapist|friends|family) with you)\b/i.test(text))
@@ -121,11 +133,7 @@ export function replyTo(text, turn = 0, session = null) {
     source: 'https://www.nhs.uk/mental-health/feelings-symptoms-behaviours/feelings-and-symptoms/grief-bereavement-loss/',
     label: 'NHS · Grief after bereavement or loss',
   };
-  if (asksForProfessionalSupport(text)) return {
-    text: 'Finding someone you feel comfortable talking with can take time. You could ask a health care provider about options or consult a professional directory. Before choosing, ask about credentials, experience with your concerns, the approach to care, fees and confidentiality. Kindevra cannot verify a provider’s credentials or availability. What feels hardest about finding support?',
-    source: exercises.support.source,
-    label: exercises.support.label,
-  };
+  if (asksForProfessionalSupport(text)) return { ...professionalReferral };
   if (session && /^(?:please )?resume exercises[.!]?$/i.test(text.trim())) {
     session.exercisesPaused = false;
     return { text: 'Exercise suggestions are available again. Your listening or small-step preference still applies, and you can stop any time.' };

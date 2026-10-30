@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Combined exercise refusals and explicit care-finding requests now receive both pause acknowledgment and referral guidance. Learned preferences remain intact while automatic exercises stay paused.
+
 No additional changes recorded.
 
 ## 0.3.0 — 2026-10-30

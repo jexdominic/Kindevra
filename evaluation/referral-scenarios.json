@@ -62,7 +62,7 @@
   {
     "id": "refusal",
     "input": "Stop the exercise. Help me find a therapist.",
-    "expected": "pause",
-    "basis": "product-boundary"
+    "expected": "both",
+    "basis": "nimh-therapy"
   }
 ]

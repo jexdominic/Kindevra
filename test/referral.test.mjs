@@ -8,7 +8,7 @@ for (const item of cases) test(`professional referral: ${item.id}`, () => {
   for (const preference of ['listen', 'steps']) for (const paused of [false, true]) {
     const session = createSession(); session.preference = preference; session.exercisesPaused = paused;
     const reply = replyTo(item.input, 0, session);
-    if (item.expected === 'referral') {
+    if (['referral', 'both'].includes(item.expected)) {
       for (const phrase of ['credentials', 'fees', 'confidentiality', 'availability']) assert.ok(reply.text.includes(phrase), phrase);
       assert.equal(reply.source, 'https://www.nimh.nih.gov/health/topics/psychotherapies');
       assert.ok(!reply.urgent);
@@ -19,6 +19,7 @@ for (const item of cases) test(`professional referral: ${item.id}`, () => {
       if (item.expected === 'medical') assert.match(reply.text, /prescriber/);
       if (item.expected === 'pause') assert.match(reply.text, /stop the exercise/);
     }
-    assert.equal(session.exercisesPaused, paused || item.expected === 'pause');
+    if (item.expected === 'both') assert.match(reply.text, /stop the exercise/);
+    assert.equal(session.exercisesPaused, paused || ['pause', 'both'].includes(item.expected));
   }
 });

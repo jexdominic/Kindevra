@@ -121,3 +121,11 @@ See evaluation/2026-10-28-provenance-coverage.md. Version remains 0.2.0.
 - [ ] Broader language coverage, access-barrier evaluation and independent clinical review remain open.
 
 See evaluation/2026-10-29-referral.md. Version remains 0.2.0.
+
+## Combined referral and exercise consent
+- [x] Address recognized care-finding requests alongside exercise refusal.
+- [x] Preserve learned preferences, pause state and higher-priority medical/urgent boundaries.
+- [x] Verify 175 tests, 13 original scenarios and 122 source references across nine sets.
+- [ ] Broader compound intent, independent review and browser verification of this response remain open.
+
+See evaluation/2026-10-30-referral-consent.md. Version remains 0.3.0.

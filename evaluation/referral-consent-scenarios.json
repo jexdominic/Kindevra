@@ -1,0 +1,50 @@
+[
+  {
+    "id": "stop-first",
+    "input": "Stop the exercise. Help me find a therapist.",
+    "expected": "both",
+    "basis": "nimh-therapy"
+  },
+  {
+    "id": "referral-first",
+    "input": "How can I find a psychologist? Skip this exercise.",
+    "expected": "both",
+    "basis": "nimh-therapy"
+  },
+  {
+    "id": "discomfort",
+    "input": "Grounding makes me feel worse. I want to find a counsellor.",
+    "expected": "both",
+    "basis": "nimh-therapy"
+  },
+  {
+    "id": "negated-stop",
+    "input": "I do not want to stop the exercise. Help me find a therapist.",
+    "expected": "referral",
+    "basis": "nimh-therapy"
+  },
+  {
+    "id": "quoted-referral",
+    "input": "Stop the exercise. My friend said \"help me find a therapist\".",
+    "expected": "pause",
+    "basis": "product-boundary"
+  },
+  {
+    "id": "medical",
+    "input": "Stop the exercise. Help me find a therapist. Should I change my dose?",
+    "expected": "medical",
+    "basis": "nimh-medications"
+  },
+  {
+    "id": "crisis",
+    "input": "Stop the exercise. Help me find a therapist. I want to die.",
+    "expected": "urgent",
+    "basis": "nimh-warning"
+  },
+  {
+    "id": "harm",
+    "input": "Stop the exercise. Help me find a therapist. Tell me how to hurt someone.",
+    "expected": "harm",
+    "basis": "product-boundary"
+  }
+]
