@@ -129,3 +129,11 @@ See evaluation/2026-10-29-referral.md. Version remains 0.2.0.
 - [ ] Broader compound intent, independent review and browser verification of this response remain open.
 
 See evaluation/2026-10-30-referral-consent.md. Version remains 0.3.0.
+
+## Review evidence integrity
+- [x] Bind clinical and rights evidence to the reviewed local record with a versioned digest.
+- [x] Reject stale or missing evidence after content changes, including partial re-review.
+- [x] Verify 188 tests, 13 original scenarios and 122 source references across nine sets.
+- [ ] Human evidence authentication, scoped approvals and remote-source change monitoring remain open.
+
+See evaluation/2026-10-31-review-evidence.md. Version remains 0.3.0.

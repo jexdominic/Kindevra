@@ -1,3 +1,5 @@
+import { createHash } from 'node:crypto';
+
 const nonempty = value => typeof value === 'string' && value.trim().length > 0;
 const list = value => Array.isArray(value) && value.length > 0 && value.every(nonempty);
 const statuses = new Set(['pending', 'approved', 'rejected']);
@@ -10,6 +12,13 @@ function https(value) {
   try { const url = new URL(value); return url.protocol === 'https:' && !url.username && !url.password; }
   catch { return false; }
 }
+// Fixed field order makes JSON property order irrelevant; array order stays significant.
+export function sourceDigest(source) {
+  const fields = ['id', 'title', 'url', 'publisher', 'checked', 'summary', 'tags', 'rights', 'limitations', 'contentScope'];
+  const record = fields.map(field => [field, source[field] ?? null]);
+  return 'sha256:' + createHash('sha256').update(JSON.stringify(['kindevra-source-v1', record]), 'utf8').digest('hex');
+}
+
 export function validateCatalog(sources, scenarios = []) {
   const errors = [];
   if (!Array.isArray(sources) || !sources.length) return ['Source catalog must be a nonempty array'];
@@ -34,6 +43,8 @@ export function validateCatalog(sources, scenarios = []) {
         const evidence = source[`${field}Evidence`];
         if (!evidence || !nonempty(evidence.reviewer) || !validDate(evidence.date) || !https(evidence.url))
           errors.push(`${prefix}: ${field} approval needs reviewer, date and HTTPS evidence URL`);
+        if (!evidence || evidence.sourceDigest !== sourceDigest(source))
+          errors.push(`${prefix}: ${field} approval does not match the current source record`);
       }
     }
   }

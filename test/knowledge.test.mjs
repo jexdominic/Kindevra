@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { validateCatalog, eligibleSources } from '../knowledge/catalog.mjs';
+import { validateCatalog, eligibleSources, sourceDigest } from '../knowledge/catalog.mjs';
 const sources = JSON.parse(readFileSync(new URL('../knowledge/sources.json', import.meta.url)));
 const scenarios = JSON.parse(readFileSync(new URL('../evaluation/scenarios.json', import.meta.url)));
 const copy = () => structuredClone(sources);
@@ -37,7 +37,7 @@ test('both approvals and matching tags are required; returned records are isolat
   // Synthetic review metadata exercises the gate; no real source is approved.
   for (const field of ['clinicalReview', 'rightsReview']) {
     item[field] = 'approved';
-    item[`${field}Evidence`] = { reviewer: 'Synthetic test reviewer', date: '2026-10-25', url: 'https://example.org/test-evidence' };
+    item[`${field}Evidence`] = { reviewer: 'Synthetic test reviewer', date: '2026-10-25', url: 'https://example.org/test-evidence', sourceDigest: sourceDigest(item) };
   }
   const result = eligibleSources(data, ['crisis']); assert.equal(result.length, 1);
   result[0].tags.push('changed'); assert.ok(!item.tags.includes('changed'));
@@ -45,4 +45,52 @@ test('both approvals and matching tags are required; returned records are isolat
   assert.deepEqual(eligibleSources(data, []), []);
   item.rightsReview = 'rejected'; assert.deepEqual(eligibleSources(data, ['crisis']), []);
   item.rightsReview = 'pending'; assert.deepEqual(eligibleSources(data, ['crisis']), []);
+});
+
+function approvedCopy() {
+  const data = copy();
+  for (const field of ['clinicalReview', 'rightsReview']) {
+    data[0][field] = 'approved';
+    data[0][`${field}Evidence`] = {
+      reviewer: 'Synthetic reviewer', date: '2026-10-31',
+      url: 'https://example.org/evidence', sourceDigest: sourceDigest(data[0]),
+    };
+  }
+  return data;
+}
+for (const [field, value] of [
+  ['id', 'changed-source'], ['title', 'Changed title'], ['url', 'https://example.org/changed'],
+  ['publisher', 'Changed publisher'], ['checked', '2026-10-31'], ['summary', 'Changed summary'],
+  ['tags', ['changed-tag']], ['rights', 'Changed rights'], ['limitations', ['Changed limitation']],
+]) test(`editing reviewed ${field} invalidates both approvals`, () => {
+  const data = approvedCopy(); data[0][field] = value;
+  const errors = validateCatalog(data);
+  for (const review of ['clinicalReview', 'rightsReview']) assert.ok(errors.some(e => e.includes(review + ' approval does not match')));
+  assert.throws(() => eligibleSources(data, data[0].tags));
+});
+test('missing or incorrect digest prevents either approval from being used', () => {
+  for (const field of ['clinicalReview', 'rightsReview']) for (const digest of [undefined, '', 'sha256:incorrect']) {
+    const data = approvedCopy(); data[0][`${field}Evidence`].sourceDigest = digest;
+    assert.throws(() => eligibleSources(data, data[0].tags));
+  }
+});
+test('object property reordering does not invalidate review evidence', () => {
+  const data = approvedCopy();
+  data[0] = Object.fromEntries(Object.entries(data[0]).reverse());
+  assert.deepEqual(validateCatalog(data), []);
+  assert.equal(eligibleSources(data, data[0].tags).length, 1);
+});
+test('updating just one review cannot approve changed content', () => {
+  const data = approvedCopy(); data[0].summary += ' Revised.';
+  data[0].clinicalReviewEvidence.sourceDigest = sourceDigest(data[0]);
+  assert.throws(() => eligibleSources(data, data[0].tags));
+  data[0].rightsReview = 'pending';
+  assert.deepEqual(validateCatalog(data), []);
+  assert.deepEqual(eligibleSources(data, data[0].tags), []);
+});
+test('scope and exact wording are included in the digest', () => {
+  const item = copy()[0]; const original = sourceDigest(item);
+  item.contentScope = 'full-text'; assert.notEqual(sourceDigest(item), original);
+  item.contentScope = 'original-summary-and-link'; item.summary += ' ';
+  assert.notEqual(sourceDigest(item), original);
 });
