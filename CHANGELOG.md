@@ -2,7 +2,10 @@
 
 ## Unreleased
 
-- Experimental local English/Turkish conversations with explicit opt-in, bounded history and cancellation. Generated-response weaknesses remain documented; no version bump.
+- Focus local conversation on English, pass explicit visit-only practice preferences and selected check-ins to the model, and connect review-gated summary retrieval. Pending research remains excluded.
+- Evaluate the installed model against all existing conversation scenario files, preserving raw responses, scripted boundary results and unresolved review expectations separately. No model-weight training or version increment.
+
+- Experimental local English conversations with explicit opt-in, bounded history and cancellation. Generated-response weaknesses remain documented; no version bump.
 
 - Bound knowledge review evidence to the exact local summary and provenance record. Edits invalidate stale approvals; local approved records now require matching digests for both reviews. All current sources remain pending.
 

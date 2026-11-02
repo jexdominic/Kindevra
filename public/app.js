@@ -2,16 +2,16 @@ import { LocalChat } from './local-chat.js';
 import { localBoundary } from './local-boundary.js';
 import { createSession, checkIn, suggestMood } from './session.js';
 import { replyTo, urgentSupport, exercises } from './support.js';
-import { createProfileUpdater } from './profile.js';
+import { createProfileUpdater, modelPreferences } from './profile.js';
 const profileUpdater = createProfileUpdater();
 const localChat = new LocalChat();
 const consent = document.querySelector('#local-consent');
 const language = document.querySelector('#reply-language');
 const localStatus = document.querySelector('#local-status');
 let sending = false; let requestVersion = 0;
-function cancelLocal() { requestVersion++; localChat.cancel(); sending=false; document.querySelector('.send').disabled=false; localStatus.textContent=language.value==='tr'?'Yanıt durduruldu.':'Reply stopped.'; }
+function cancelLocal() { requestVersion++; localChat.cancel(); sending=false; document.querySelector('.send').disabled=false; localStatus.textContent='Reply stopped.'; }
 consent.addEventListener('change',()=>{cancelLocal();localChat.clear();localStatus.textContent=consent.checked?'Local conversation enabled. No cloud provider.':'Scripted mode. Local conversation off.';});
-language.addEventListener('change',()=>{cancelLocal();localChat.clear();localStatus.textContent=language.value==='tr'?'Türkçe seçildi. Yerel konuşmayı etkinleştir.':'English selected. Enable local conversation to begin.';});
+language.addEventListener('change',()=>{cancelLocal();localChat.clear();localStatus.textContent='English selected. Enable local conversation to begin.';});
 document.querySelector('#stop-reply').addEventListener('click',cancelLocal);
 const messages = document.querySelector('#messages');
 let turn = 0;
@@ -48,32 +48,30 @@ function reset() { localChat.clear(); cancelLocal(); localStatus.textContent=con
 async function send(text) {
   text = text.trim().slice(0, 2000);
   if (!text || sending) return;
-  const tr=language.value==='tr';
   const detected=localBoundary(text,language.value,session.preference,session.exercisesPaused);
-  if(tr && !consent.checked && !detected){localStatus.textContent='Türkçe konuşma için yerel model seçeneğini etkinleştir.';return;}
   addMessage(text, 'user');
-  let response = tr ? detected : detected?.urgent ? detected : replyTo(text,turn++,session);
+  let response = detected?.urgent ? detected : replyTo(text,turn++,session);
   if(response?.paused)session.exercisesPaused=true; if(response?.resumed)session.exercisesPaused=false; if(response?.forgotten){profileUpdater.clear(session);localChat.clear();}
   if(consent.checked && (!response || response.modelEligible)) {
     const requestId=++requestVersion; sending=true;document.querySelector('.send').disabled=true;
-    localStatus.textContent=tr?'Kindevra yanıt hazırlıyor…':'Kindevra is preparing a reply…';
+    localStatus.textContent='Kindevra is preparing a reply…';
     try {
-      response=await localChat.reply(text,{language:language.value,preference:session.preference,exercisesPaused:session.exercisesPaused});
+      response=await localChat.reply(text,{language:language.value,preference:session.preference,exercisesPaused:session.exercisesPaused,...modelPreferences(session)});
       if(!response)return;
-      localStatus.textContent=response.generated?(tr?'Yerel model yanıtı · Yanılabilir':'Local model reply · May be inaccurate'):(tr?'Hazır sınır yanıtı':'Scripted boundary response');
-    } catch {localStatus.textContent=tr?'Yerel model yanıt veremedi. Tekrar deneyebilir veya yerel konuşmayı kapatabilirsin.':'Local model did not respond. Try again or turn off local conversation.';return;}
+      localStatus.textContent=response.generated?'Local model reply · May be inaccurate':'Scripted boundary response';
+    } catch {localStatus.textContent='Local model did not respond. Try again or turn off local conversation.';return;}
     finally {if(requestId===requestVersion){sending=false;document.querySelector('.send').disabled=false;}}
   } else if(consent.checked) {
     if(response?.forgotten || response?.text.startsWith('Practice preferences forgotten'))localChat.clear();
     else localChat.remember(text,response.text);
-    localStatus.textContent=tr?'Hazır sınır yanıtı':'Scripted boundary response';
+    localStatus.textContent='Scripted boundary response';
   }
   addMessage(response.text, 'kindevra', response.source, response.label);
-  if (!response.urgent && !tr) profileUpdater.observe(session, text);
-  pendingMood = response.urgent || tr ? null : suggestMood(text);
+  if (!response.urgent) profileUpdater.observe(session, text);
+  pendingMood = response.urgent ? null : suggestMood(text);
   document.querySelector('#mood-suggestion').hidden = !pendingMood;
   if (pendingMood) document.querySelector('#suggestion-text').textContent = `Would “${pendingMood.toLowerCase()}” fit as a check-in? I may have misunderstood. You can also select a different mood above.`;
-  if (response.urgent) {cancelLocal();document.querySelector('#urgent-text').textContent=tr?response.text:urgentSupport;document.querySelector('#support-dialog').showModal();}
+  if (response.urgent) {cancelLocal();document.querySelector('#urgent-text').textContent=urgentSupport;document.querySelector('#support-dialog').showModal();}
 }
 document.querySelector('#chat-form').addEventListener('submit', e => {
   e.preventDefault(); const input = document.querySelector('#message'); send(input.value); input.value = ''; input.focus();

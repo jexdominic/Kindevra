@@ -8,7 +8,7 @@ Each source records an ID, title, HTTPS URL, publisher, verification date, origi
 
 The checker validates structure, not authenticity. A human must verify review evidence, reviewer qualifications, rights scope and any conditions before approving a source. Valid URLs are not checked for reachability or authority. Eligibility is a preparation step for summary retrieval, not a safety certification or endorsement. Source aging and review revocation monitoring are not implemented.
 
-This module runs locally as development tooling. The browser's scripted responses do not use it, and existing source-linked exercises remain subject to their documented licensing and clinical-review limitations. It makes no network requests and stores no conversation data. No additional source content was ingested by introducing these checks.
+The local model adapter now calls this eligibility check before supplying up to two matching original summaries. All current records remain pending, so no summary is supplied. The browser's scripted responses do not use it, and existing source-linked exercises remain subject to their documented licensing and clinical-review limitations. It makes no network requests and stores no conversation data. No additional source content was ingested by introducing these checks.
 
 ## Review evidence and content changes
 

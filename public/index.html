@@ -30,12 +30,11 @@
       <div class="support-preferences"><label for="preference">How would you like support?</label> <select id="preference"><option value="listen">Listen first</option><option value="steps">Suggest a small step</option></select><button id="forget-mood">Forget check-in</button><p>Check-ins are optional and stay in this tab. They are not a mental health assessment.</p></div>
       <div id="mood-suggestion" hidden><p id="suggestion-text"></p><button id="accept-mood">Use this check-in</button><button id="dismiss-mood">That doesn’t fit</button></div>
       <section class="support-preferences" aria-label="Local conversation">
-<label for="reply-language">Conversation language / Konuşma dili</label>
-<select id="reply-language"><option value="en">English</option><option value="tr">Türkçe</option></select>
-<p><label><input type="checkbox" id="local-consent"> Enable local conversation / Yerel konuşmayı etkinleştir</label></p>
-<p>When enabled, recent chat messages are processed by a model on this computer. No cloud provider is used. The model can make mistakes. Turning this off clears model context; visible messages remain until Clear conversation.</p>
-<p>Etkinleştirildiğinde son mesajlar bu bilgisayardaki modelde işlenir. Bulut sağlayıcısı kullanılmaz. Model yanılabilir. Kapatmak model bağlamını temizler; görünen mesajlar konuşma temizlenene kadar kalır.</p>
-<button type="button" id="stop-reply">Stop reply / Yanıtı durdur</button><p id="local-status" role="status">Local conversation off. English is the default.</p>
+<label for="reply-language">Conversation language</label>
+<select id="reply-language"><option value="en">English</option></select>
+<p><label><input type="checkbox" id="local-consent"> Enable local conversation</label></p>
+<p>When enabled, recent chat messages, selected check-ins and practice preferences are processed by a model on this computer. No cloud provider is used. The model can make mistakes. Turning this off clears model context; visible messages remain until Clear conversation.</p>
+<button type="button" id="stop-reply">Stop reply</button><p id="local-status" role="status">Local conversation off. English is the default.</p>
 </section>
 <div class="conversation-heading"><h2>A moment, just for you</h2><button id="clear">Clear conversation</button></div>
       <div id="messages" role="log" aria-label="Conversation" aria-live="polite"></div>
