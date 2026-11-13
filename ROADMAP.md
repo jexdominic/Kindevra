@@ -137,3 +137,25 @@ See evaluation/2026-10-30-referral-consent.md. Version remains 0.3.0.
 - [ ] Human evidence authentication, scoped approvals and remote-source change monitoring remain open.
 
 See evaluation/2026-10-31-review-evidence.md. Version remains 0.3.0.
+
+## Experimental local conversations
+- [x] Add opt-in loopback model integration with English default and Turkish selection.
+- [x] Bound context, validate local requests and cancel pending replies on user controls.
+- [x] Run real bilingual smoke conversations and document observed language/context weaknesses.
+- [ ] Resolve listening-only and Turkish-quality weaknesses; broaden independent evaluations before release claims.
+- [ ] Integrate and verify voice and theme branches separately.
+
+## English model development
+- [x] Limit current conversation selection and API requests to English.
+- [x] Pass explicit practice choices and optional check-ins into model context.
+- [x] Connect original-summary retrieval to existing review and evidence checks.
+- [x] Add a real-model runner for the nine existing scenario sets, separate from model context.
+- [ ] Obtain scoped research approvals; all current summaries remain excluded.
+- [ ] Review all generated results against the behavioral rubrics and resolve failures before broader release claims.
+- [ ] Add independent held-out and multi-turn evaluations; no clinical validation or model-weight training has occurred.
+
+## Local response review
+- [x] Check selected generated preference violations and unsupported promises before displaying replies.
+- [x] Bound revision to one attempt and label withheld output without adding it to conversation memory.
+- [x] Keep raw-model evaluation separate from integrated response review.
+- [ ] Broader semantic review and reliable danger/compound-intent behavior remain unresolved.

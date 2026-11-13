@@ -54,3 +54,7 @@ export function preferredPractice(session) {
 export function practiceDeclined(session, practice) {
   return profiles.get(session)?.[practice] === false;
 }
+
+export function modelPreferences(session) {
+  return { declinedPractices: ['grounding', 'thoughts'].filter(practice => practiceDeclined(session, practice)), preferredPractice: preferredPractice(session), mood: session.mood ?? null };
+}

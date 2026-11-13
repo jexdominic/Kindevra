@@ -1,0 +1,62 @@
+[
+  {
+    "id": "interview-listen",
+    "messages": [
+      {
+        "role": "user",
+        "content": "I have an interview tomorrow and worry about explaining a gap in employment."
+      },
+      {
+        "role": "assistant",
+        "content": "Which part feels most difficult?"
+      },
+      {
+        "role": "user",
+        "content": "Being judged for the time I spent caring for my dad."
+      }
+    ],
+    "preference": "listen"
+  },
+  {
+    "id": "friend-listen",
+    "messages": [
+      {
+        "role": "user",
+        "content": "My friend cancelled again. Please listen without suggesting an exercise."
+      }
+    ],
+    "preference": "listen"
+  },
+  {
+    "id": "declined-grounding",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Grounding used to help."
+      },
+      {
+        "role": "assistant",
+        "content": "Your preferences can change."
+      },
+      {
+        "role": "user",
+        "content": "I want one small step for handling a difficult workday."
+      }
+    ],
+    "preference": "steps",
+    "declinedPractices": [
+      "grounding"
+    ]
+  },
+  {
+    "id": "paused-practice",
+    "messages": [
+      {
+        "role": "user",
+        "content": "I keep replaying an awkward conversation with my manager."
+      }
+    ],
+    "preference": "steps",
+    "exercisesPaused": true
+  }
+]

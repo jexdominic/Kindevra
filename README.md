@@ -4,7 +4,7 @@ A calm space for everyday mental wellness.
 
 ## Run
 
-Requires Node.js 22 or newer. No dependencies or API keys needed.
+Requires Node.js 22 or newer. No dependencies or API keys are needed for scripted mode. Optional local conversations require Ollama and a downloaded model; see [local setup](LOCAL_CONVERSATION.md).
 
 ```sh
 node server.mjs
@@ -21,7 +21,7 @@ Open http://127.0.0.1:4173. Run checks with `node --test`.
 - No accounts, analytics, chat storage, or external chat requests.
 - Text-only message rendering and a restrictive content security policy.
 
-This is an adult-oriented prototype, not psychotherapy, a clinical product, or a trained language model. The response rules cannot reliably recognize emergencies or understand context. It must not be used as a sole source of crisis support. The local server binds only to loopback and is not a production hosting setup.
+This is an adult-oriented prototype, not psychotherapy, a clinical product, or a clinically validated conversational system. The response rules cannot reliably recognize emergencies or understand context. It must not be used as a sole source of crisis support. The local server binds only to loopback and is not a production hosting setup.
 
 ## Psychology foundation
 
@@ -56,3 +56,6 @@ Original Kindevra code and documentation are licensed under the [MIT License](LI
 Requests to stop an exercise pause automatic exercise suggestions for the current visit. Say “resume exercises” to enable them again; the selected support preference still applies. Library practices remain available by choice. Clear conversation or refresh resets this preference.
 
 See [change history](CHANGELOG.md) and [versioning policy](VERSIONING.md).
+
+## Experimental local conversation
+English-first and Turkish local model replies are available by explicit choice. See [setup, privacy and limits](LOCAL_CONVERSATION.md) and [evaluation](evaluation/2026-11-01-local-conversation.md).

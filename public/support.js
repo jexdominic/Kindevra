@@ -145,18 +145,18 @@ export function replyTo(text, turn = 0, session = null) {
     return { text: /\b(work|job)\b/i.test(riskText)
       ? 'Thanks for clarifying. What has been difficult at work, and what kind of support would help right now?'
       : 'Thanks for clarifying. What would you like support with right now?' };
-  if (session?.preference === 'listen' && !/\b(therap\w*|professional|depress\w*)\b/i.test(text)) return adaptiveReply(session);
+  if (session?.preference === 'listen' && !/\b(therap\w*|professional|depress\w*)\b/i.test(text)) return { ...adaptiveReply(session), modelEligible: true };
   if (/\b(anxi\w*|panic|stress\w*|overwhelm\w*)\b/i.test(text))
     return session && practiceDeclined(session, 'grounding') ? adaptiveReply(session) : exercises.grounding;
   if (/\b(thought\w*|worr\w*|overthink\w*)\b/i.test(text))
     return session && practiceDeclined(session, 'thoughts') ? adaptiveReply(session) : exercises.thoughts;
   if (/\b(therap\w*|professional|depress\w*)\b/i.test(text)) return exercises.support;
   if (session?.preference === 'steps' && preferredPractice(session)) return exercises[preferredPractice(session)];
-  if (session) return adaptiveReply(session);
+  if (session) return { ...adaptiveReply(session), modelEligible: true };
   const prompts = [
     'Thank you for putting that into words. What feels most important for you to talk about right now?',
     'What has this been like for you today? Share only what feels comfortable.',
     'Would it help to pause with a grounding exercise, or think of one person you could reach out to?',
   ];
-  return { text: prompts[turn % prompts.length] };
+  return { text: prompts[turn % prompts.length], modelEligible: true };
 }

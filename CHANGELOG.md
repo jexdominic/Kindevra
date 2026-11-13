@@ -2,6 +2,15 @@
 
 ## Unreleased
 
+- Keep pending local replies running when switching tabs or minimizing the browser. Explicit stop and page exit still cancel generation.
+
+- Review generated replies for selected preference violations, unsupported safety conclusions and dependency claims. Allow one revision; withhold replies that still match these checks and label the fallback explicitly.
+
+- Focus local conversation on English, pass explicit visit-only practice preferences and selected check-ins to the model, and connect review-gated summary retrieval. Pending research remains excluded.
+- Evaluate the installed model against all existing conversation scenario files, preserving raw responses, scripted boundary results and unresolved review expectations separately. No model-weight training or version increment.
+
+- Experimental local English conversations with explicit opt-in, bounded history and cancellation. Generated-response weaknesses remain documented; no version bump.
+
 - Bound knowledge review evidence to the exact local summary and provenance record. Edits invalidate stale approvals; local approved records now require matching digests for both reviews. All current sources remain pending.
 
 - Combined exercise refusals and explicit care-finding requests now receive both pause acknowledgment and referral guidance. Learned preferences remain intact while automatic exercises stay paused.
