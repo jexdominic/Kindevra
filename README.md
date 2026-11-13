@@ -14,6 +14,7 @@ Open http://127.0.0.1:4173. Run checks with `node --test`.
 
 ## Version 0.3.0
 
+- Five appearance options: Warm, Minimal, Cozy, Chocolate Milk, and Cookie and Milk. The header theme selector changes all views for the current visit; refresh restores Warm. Clearing a conversation keeps the selected appearance.
 - Responsive conversation interface with scripted, clearly labeled replies.
 - Session-only mood check-in; clear conversation also clears the mood.
 - Three sourced psychology practices and an always-accessible urgent support panel.
