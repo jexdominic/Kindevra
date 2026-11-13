@@ -153,3 +153,9 @@ See evaluation/2026-10-31-review-evidence.md. Version remains 0.3.0.
 - [ ] Obtain scoped research approvals; all current summaries remain excluded.
 - [ ] Review all generated results against the behavioral rubrics and resolve failures before broader release claims.
 - [ ] Add independent held-out and multi-turn evaluations; no clinical validation or model-weight training has occurred.
+
+## Local response review
+- [x] Check selected generated preference violations and unsupported promises before displaying replies.
+- [x] Bound revision to one attempt and label withheld output without adding it to conversation memory.
+- [x] Keep raw-model evaluation separate from integrated response review.
+- [ ] Broader semantic review and reliable danger/compound-intent behavior remain unresolved.

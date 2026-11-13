@@ -13,7 +13,7 @@ export class LocalChat {
       const result=await response.json();
       if(generation!==this.generation)return null;
       if(typeof result.text!=='string'||!result.text.trim())throw new Error('Empty reply');
-      this.remember(text,result.text);return result;
+      if(!result.fallback)this.remember(text,result.text);return result;
     } catch(error) {if(generation!==this.generation)return null;throw error;}
     finally {if(generation===this.generation)this.controller=null;}
   }

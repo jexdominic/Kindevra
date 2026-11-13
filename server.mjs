@@ -1,11 +1,12 @@
+import { generateConversation } from './response-review.mjs';
 import { createServer } from 'node:http';
 import { readFile } from 'node:fs/promises';
 import { pathToFileURL } from 'node:url';
-import { generateReply, validateChat } from './local-model.mjs';
+import { validateChat } from './local-model.mjs';
 import { localBoundary } from './public/local-boundary.js';
 const files = Object.fromEntries(['app.js','support.js','belief-support.js','session.js','profile.js','local-boundary.js','local-chat.js','style.css'].map(name => ['/'+name,[name,name.endsWith('.css')?'text/css':'text/javascript']]));
 files['/'] = ['index.html','text/html'];
-export function createApp({generate = generateReply} = {}) {
+export function createApp({generate = generateConversation} = {}) {
   let busy = false;
   return createServer(async (req,res) => {
     const headers = {'Cache-Control':'no-store','X-Content-Type-Options':'nosniff','Referrer-Policy':'no-referrer','Content-Security-Policy':"default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'none'"};

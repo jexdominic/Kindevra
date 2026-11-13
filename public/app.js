@@ -58,7 +58,7 @@ async function send(text) {
     try {
       response=await localChat.reply(text,{language:language.value,preference:session.preference,exercisesPaused:session.exercisesPaused,...modelPreferences(session)});
       if(!response)return;
-      localStatus.textContent=response.generated?'Local model reply · May be inaccurate':'Scripted boundary response';
+      localStatus.textContent=response.fallback?'Local reply withheld · Try again':response.generated?'Local model reply · May be inaccurate':'Scripted boundary response';
     } catch {localStatus.textContent='Local model did not respond. Try again or turn off local conversation.';return;}
     finally {if(requestId===requestVersion){sending=false;document.querySelector('.send').disabled=false;}}
   } else if(consent.checked) {
@@ -120,5 +120,4 @@ Object.values(exercises).forEach(exercise => {
 });
 reset();
 
-document.addEventListener('visibilitychange',()=>{if(document.hidden)cancelLocal();});
 window.addEventListener('pagehide',()=>localChat.clear());

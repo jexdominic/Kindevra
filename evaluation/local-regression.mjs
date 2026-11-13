@@ -1,3 +1,4 @@
+import { generateConversation } from '../response-review.mjs';
 import { readdir, readFile, writeFile } from 'node:fs/promises';
 import { generateReply, MODEL, SYSTEM } from '../local-model.mjs';
 import { localBoundary } from '../public/local-boundary.js';
@@ -9,7 +10,8 @@ const directory = new URL('./', import.meta.url);
 const files = (await readdir(directory)).filter(name => /^(?:.+-)?scenarios\.json$/.test(name)).sort();
 const report = { model:MODEL, systemDigest:createHash('sha256').update(SYSTEM).digest('hex'), startedAt:new Date().toISOString(), mode:'English; fresh context per case; listen preference; no paused exercises', rubric:'Existing required/forbidden terms score lexical compatibility only. Route and pause expectations are preserved for manual review. No clinical pass score.', results:[] };
 let errors = 0;
-for (const file of files) {
+let consecutiveErrors = 0;
+evaluationLoop: for (const file of files) {
   const fixtureText = await readFile(new URL(file,directory),'utf8');
   const fixtureDigest = createHash('sha256').update(fixtureText).digest('hex');
   for (const item of JSON.parse(fixtureText)) {
@@ -19,7 +21,7 @@ for (const file of files) {
       const raw = await generateReply({consent:true,language:'en',preference:'listen',exercisesPaused:false,messages:[{role:'user',content:item.input}]}, {signal:AbortSignal.timeout(90000)});
       row.raw = raw;
       const boundary = localBoundary(item.input,'en','listen',false);
-      row.integrated = boundary ? {...boundary,generated:false} : raw;
+      row.integrated = boundary ? {...boundary,generated:false} : await generateConversation({consent:true,language:'en',preference:'listen',exercisesPaused:false,messages:[{role:'user',content:item.input}]},{initialReply:raw,signal:AbortSignal.timeout(90000)});
       if (Array.isArray(item.required) && Array.isArray(item.forbidden)) {
         row.lexical = {};
         for (const mode of ['raw','integrated']) {
@@ -29,15 +31,17 @@ for (const file of files) {
           row.lexical[mode] = {pass:!missing.length && !forbidden.length,missing,forbidden};
         }
       }
-    } catch { row.error='Generation failed or timed out'; errors++; }
+      consecutiveErrors = 0;
+    } catch { row.error='Generation failed or timed out'; errors++; consecutiveErrors++; }
     row.elapsedMs = Math.round(performance.now()-started);
     report.results.push(row);
     await writeFile(output,JSON.stringify(report,null,2)+'\n');
-    console.log(`${report.results.length} ${file}/${item.id}: ${row.error ?? (row.integrated.generated ? 'generated' : 'scripted boundary')}`);
+    console.log(`${report.results.length} ${file}/${item.id}: ${row.error ?? (row.integrated.generated ? 'generated' : row.integrated.fallback ? 'withheld' : 'scripted boundary')}`);
+    if (consecutiveErrors >= 3) {report.incompleteReason='Stopped after three consecutive generation failures';break evaluationLoop;}
   }
 }
 report.completedAt = new Date().toISOString();
-report.summary = {cases:report.results.length, errors, scoredCases:report.results.filter(r=>r.lexical).length, rawLexicalPass:report.results.filter(r=>r.lexical?.raw.pass).length, integratedLexicalPass:report.results.filter(r=>r.lexical?.integrated.pass).length, scripted:report.results.filter(r=>r.integrated && !r.integrated.generated).length};
+report.summary = {cases:report.results.length, errors, scoredCases:report.results.filter(r=>r.lexical).length, rawLexicalPass:report.results.filter(r=>r.lexical?.raw.pass).length, integratedLexicalPass:report.results.filter(r=>r.lexical?.integrated.pass).length, scripted:report.results.filter(r=>r.integrated && !r.integrated.generated && !r.integrated.fallback).length, withheld:report.results.filter(r=>r.integrated?.fallback).length, revised:report.results.filter(r=>r.integrated?.review?.attempts === 2).length};
 await writeFile(output,JSON.stringify(report,null,2)+'\n');
 console.log(JSON.stringify(report.summary));
 process.exitCode = errors || report.results.some(r=>r.lexical && (!r.lexical.raw.pass || !r.lexical.integrated.pass)) ? 1 : 0;
